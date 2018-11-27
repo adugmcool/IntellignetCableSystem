@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F3F5"
+    android:clickable="true">
+
+    <include layout="@layout/fragment_title_bar"/>
+
+    <ImageView
+        android:id="@+id/status_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/status_pass"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:id="@+id/status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="通过"
+        android:textSize="20sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/content_et"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:background="@drawable/shape_order_status_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="18dp"
+        android:paddingTop="12dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingBottom="12dp"
+        android:cursorVisible="false"
+        android:textColor="@color/color_FF4A4A4A"
+        android:textSize="16sp"/>
+    
+    <Button
+        android:id="@+id/submit_btn"
+        style="@style/bottom_button"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/shape_analyze_btn"
+        android:text="@string/submit" />
+
+</LinearLayout>

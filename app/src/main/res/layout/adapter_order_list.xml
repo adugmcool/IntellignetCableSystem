@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_analyze_result_bg"
+        android:minHeight="52dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/order_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/status_tv"
+            android:fontFamily="@font/notosanshans_regular"
+            android:text="常营民族东路"
+            android:textColor="@color/color_FF4D4D4D"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/next_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/symbols_mine" />
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/next_iv"
+            android:fontFamily="@font/notosanshans_regular"
+            android:text="未执行"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

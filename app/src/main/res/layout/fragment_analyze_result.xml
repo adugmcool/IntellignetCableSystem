@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_F0F3F5"
+    android:clickable="true">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/fragment_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/symbols_factory" />
+
+            <TextView
+                style="@style/mine_text_size_color"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:text="XXXX工厂" />
+
+            <TextView
+                style="@style/mine_text_size_color"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="2000-2018" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="48dp"
+                android:background="@drawable/shape_analyze_result_bg"
+                android:orientation="horizontal"
+                android:paddingTop="11dp"
+                android:paddingBottom="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp">
+
+                    <TextView
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/fault" />
+
+                    <TextView
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/reason" />
+
+                    <TextView
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/processing_result" />
+
+                    <TextView
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/place" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/fault_tv"
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/fault"
+                        android:textColor="@color/color_757575" />
+
+                    <TextView
+                        android:id="@+id/reason_tv"
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/reason"
+                        android:textColor="@color/color_757575" />
+
+                    <TextView
+                        android:id="@+id/result_tv"
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/processing_result"
+                        android:textColor="@color/color_757575" />
+
+                    <TextView
+                        android:id="@+id/place_tv"
+                        style="@style/mine_text_size_color"
+                        android:layout_height="36dp"
+                        android:text="@string/place"
+                        android:textColor="@color/color_757575" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

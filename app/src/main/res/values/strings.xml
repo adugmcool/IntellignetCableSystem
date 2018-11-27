@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">IntellignetCableSystem</string>
+    <string name="work_order">工单</string>
+    <string name="location">地图</string>
+    <string name="analyze">分析</string>
+    <string name="mine">我的</string>
+    <string name="all_order">全部工单</string>
+    <string name="pending_review">待审核</string>
+    <string name="reviewed">已审核</string>
+    <string name="rejected">已驳回</string>
+    <string name="check_for_updates">检测更新</string>
+    <string name="dispatch_list">派工单</string>
+    <string name="quit">退出</string>
+    <string name="intelligent_analyze">智能分析</string>
+    <string name="fault">故障：</string>
+    <string name="reason">原因：</string>
+    <string name="processing_result">处理结果：</string>
+    <string name="place">位置：</string>
+    <string name="login_name">用户名</string>
+    <string name="login_password">密码</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="signs_number">标识牌数量</string>
+    <string name="please_input_signs_number">请输入标识牌数量</string>
+    <string name="place_sheet">位置</string>
+    <string name="please_input_place_sheet">请输入位置</string>
+    <string name="assign">指派</string>
+    <string name="dispatch_sheet">派工单</string>
+    <string name="worksheet_info">工单信息</string>
+    <string name="worksheet_management">工单管理</string>
+    <string name="scan">扫描</string>
+    <string name="lighting_confirm">亮灯确认</string>
+    <string name="number_signs">标示牌数量：</string>
+    <string name="dispatch_time">派发时间：</string>
+    <string name="dispatch_name">派发人：</string>
+    <string name="worksheet_detail">工单详情</string>
+    <string name="submit">提交</string>
+    <string name="worksheet_status">工单状态</string>
+    <string name="picture_info">图片信息</string>
+
+    <string-array name="status">
+        <item>状态</item>
+        <item>通过</item>
+        <item>驳回</item>
+        <item>指派</item>
+    </string-array>
+</resources>

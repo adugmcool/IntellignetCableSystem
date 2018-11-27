@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F3F5"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/fragment_title_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <Spinner
+            android:id="@+id/status_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:dropDownWidth="128dp"
+            android:popupBackground="@color/color_FAFAFA"
+            android:entries="@array/status" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="7dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_height="39dp"
+                    android:text="@string/worksheet_info" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E6E6E6" />
+
+                <TextView
+                    android:id="@+id/order_info_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="28dp"
+                    android:paddingTop="19dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_757575"
+                    android:fontFamily="@font/notosanshans_regular"
+                    android:gravity="start"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_height="39dp"
+                    android:text="@string/picture_info" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E6E6E6" />
+
+                <com.system.intellignetcable.view.MyGridView
+                    android:id="@+id/gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="2"
+                    android:horizontalSpacing="10dp"
+                    android:verticalSpacing="10dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginRight="16dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_height="39dp"
+                    android:text="@string/location" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E6E6E6" />
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:text="敬请期待..."
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F3F5"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/fragment_title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/shape_analyze_result_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:fontFamily="@font/notosanshans_regular"
+            android:gravity="center"
+            android:text="未执行"
+            android:textColor="@color/color_757575"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E6E6E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:text="@string/number_signs" />
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:text="@string/dispatch_time" />
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:text="@string/dispatch_name" />
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:text="@string/place" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="22dp">
+
+                <TextView
+                    android:id="@+id/signs_number_tv"
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="10"
+                    android:textColor="@color/color_757575"/>
+
+                <TextView
+                    android:id="@+id/dispatch_time_tv"
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="2018.11.11"
+                    android:textColor="@color/color_757575"/>
+
+                <TextView
+                    android:id="@+id/dispatch_name_tv"
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="张山"
+                    android:textColor="@color/color_757575" />
+
+                <TextView
+                    android:id="@+id/place_tv"
+                    style="@style/mine_text_size_color"
+                    android:layout_height="36dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="东三环中路"
+                    android:textColor="@color/color_757575"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

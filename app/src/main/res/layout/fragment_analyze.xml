@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_F0F3F5"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:id="@+id/search_rl"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/color_FF1989FA"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <include
+            layout="@layout/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout-->
+        <!--android:id="@+id/refresh_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:srlPrimaryColor="@color/color_F0F3F5">-->
+
+        <ListView
+            android:id="@+id/analyze_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/search_rl"
+            android:layout_marginTop="12dp"
+            android:divider="@null"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:listSelector="@null"/>
+
+    <!--</com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
+
+    <Button
+        android:id="@+id/analyze_btn"
+        style="@style/bottom_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/shape_analyze_btn"
+        android:gravity="center"
+        android:text="@string/intelligent_analyze" />
+
+</RelativeLayout>

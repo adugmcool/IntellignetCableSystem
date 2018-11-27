@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F3F5"
+    android:clickable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_FF1989FA"
+            android:paddingBottom="24dp"
+            android:paddingTop="12dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/head_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/nickname_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/head_photo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
+                android:gravity="center"
+                android:fontFamily="@font/notosanshans_regular"
+                android:text="sssss"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/mine_text_size_color"
+                android:layout_height="39dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:text="@string/all_order" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:background="@color/color_E6E6E6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_weight="1"
+                    android:text="@string/pending_review" />
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_weight="1"
+                    android:text="@string/reviewed" />
+
+                <TextView
+                    style="@style/mine_text_size_color"
+                    android:layout_weight="1"
+                    android:text="@string/rejected" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E6E6E6" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_E6E6E6" />
+
+        <RelativeLayout
+            android:id="@+id/updates_rl"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:paddingLeft="16dp"
+            android:paddingRight="13dp">
+
+            <TextView
+                style="@style/mine_text_size_color"
+                android:layout_centerVertical="true"
+                android:text="@string/check_for_updates" />
+
+            <TextView
+                android:id="@+id/version_tv"
+                style="@style/mine_text_size_color"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="v1.1" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E6E6E6" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_E6E6E6" />
+
+        <TextView
+            android:id="@+id/dispatch_list_tv"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:fontFamily="@font/notosanshans_regular"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:text="@string/dispatch_list"
+            android:textColor="@color/color_FF4A4A4A"
+            android:textSize="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E6E6E6" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/quit_btn"
+        style="@style/bottom_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/shape_mine_btn"
+        android:text="@string/quit"/>
+
+</RelativeLayout>

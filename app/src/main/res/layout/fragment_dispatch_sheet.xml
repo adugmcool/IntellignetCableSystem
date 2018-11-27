@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F3F5"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/fragment_title_bar" />
+
+    <RelativeLayout
+        android:id="@+id/signs_number_rl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/title_bar"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E6E6E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/mine_text_size_color"
+                android:text="@string/signs_number" />
+
+            <EditText
+                android:id="@+id/signs_number_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:cursorVisible="false"
+                android:fontFamily="@font/notosanshans_regular"
+                android:hint="@string/please_input_signs_number"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:nextFocusForward="@id/place_et"
+                android:textColor="@color/color_FF4A4A4A"
+                android:textColorHint="@color/color_9B9B9B"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_E6E6E6" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/place_rl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/signs_number_rl"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E6E6E6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/mine_text_size_color"
+                android:text="@string/place_sheet" />
+
+            <EditText
+                android:id="@+id/place_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@null"
+                android:cursorVisible="true"
+                android:fontFamily="@font/notosanshans_regular"
+                android:hint="@string/please_input_place_sheet"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/color_FF4A4A4A"
+                android:textColorHint="@color/color_9B9B9B"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_E6E6E6" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/dispatch_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/dispatch_btn"
+        android:layout_below="@id/place_rl"
+        android:layout_marginTop="10dp"
+        android:divider="@null"
+        android:dividerHeight="8dp"
+        android:listSelector="@null"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <Button
+        android:id="@+id/dispatch_btn"
+        style="@style/bottom_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/shape_analyze_btn"
+        android:text="@string/assign" />
+
+</RelativeLayout>

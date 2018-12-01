@@ -6,18 +6,37 @@
     android:minHeight="52dp"
     android:background="@drawable/shape_analyze_result_bg">
 
-    <CheckBox
-        android:id="@+id/checkbox"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:drawableLeft="@drawable/selector_checkbox"
-        android:paddingLeft="17dp"
-        android:button="@null"
-        android:text="@string/assign"
+    <!--<CheckBox-->
+        <!--android:id="@+id/checkbox"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="52dp"-->
+        <!--android:drawableLeft="@drawable/selector_checkbox"-->
+        <!--android:paddingLeft="17dp"-->
+        <!--android:button="@null"-->
+        <!--android:text="@string/assign"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:drawablePadding="19dp"-->
+        <!--android:textSize="16sp"-->
+        <!--android:textColor="@color/color_FF4D4D4D"-->
+        <!--android:fontFamily="@font/notosanshans_regular"/>-->
+
+    <ImageView
+        android:id="@+id/check_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:drawablePadding="19dp"
+        android:layout_marginLeft="17dp"
+        android:background="@drawable/selector_checkbox"/>
+
+    <TextView
+        android:id="@+id/check_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="19dp"
+        android:layout_toRightOf="@id/check_iv"
         android:textSize="16sp"
+        android:layout_centerVertical="true"
         android:textColor="@color/color_FF4D4D4D"
-        android:fontFamily="@font/notosanshans_regular"/>
+        android:fontFamily="@font/notosanshans_regular" />
 
 </RelativeLayout>

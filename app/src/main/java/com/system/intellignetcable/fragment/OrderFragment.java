@@ -1,6 +1,8 @@
 package com.system.intellignetcable.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +18,11 @@ import android.widget.RelativeLayout;
 
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.activity.MainActivity;
+import com.system.intellignetcable.activity.OrderSearchResultActivity;
+import com.system.intellignetcable.activity.ScanActivity;
 import com.system.intellignetcable.adapter.OrderPageAdapter;
+import com.system.intellignetcable.util.ParamUtil;
+import com.system.intellignetcable.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +53,7 @@ public class OrderFragment extends Fragment implements TabLayout.OnTabSelectedLi
     private List<Fragment> fragments;
     private OrderPageAdapter orderPageAdapter;
     private MainActivity mainActivity;
+    private int type;
 
     public static OrderFragment getInstance() {
         if (orderFragment == null) {
@@ -55,10 +62,17 @@ public class OrderFragment extends Fragment implements TabLayout.OnTabSelectedLi
         return orderFragment;
     }
 
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        this.mainActivity = (MainActivity) context;
+//    }
+
+
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.mainActivity = (MainActivity) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.mainActivity = (MainActivity) activity;
     }
 
     @Nullable
@@ -73,18 +87,28 @@ public class OrderFragment extends Fragment implements TabLayout.OnTabSelectedLi
     private void initData() {
         strings = new ArrayList<>();
         fragments = new ArrayList<>();
+        type = (int) SharedPreferencesUtil.get(mainActivity, ParamUtil.TYPE, 2);
+        if (type == 1){ // 1为管理员，2为普通用户
+            fragments.add(new Fragment());
+            fragments.add(OrderListFragment.newInstance(1));
+        }else {
+            fragments.add(OrderListFragment.newInstance(0));
+            fragments.add(new Fragment());
+        }
         strings.add(getResources().getString(R.string.worksheet_info));
         strings.add(getResources().getString(R.string.worksheet_management));
         for (String tab : strings) {
             tabLayout.addTab(tabLayout.newTab().setText(tab));
         }
-        for (int i = 0; i < strings.size(); i++) {
-            fragments.add(OrderListFragment.newInstance(i));
-        }
         tabLayout.setOnTabSelectedListener(this);
         orderPageAdapter = new OrderPageAdapter(getChildFragmentManager(), strings, fragments);
         viewPager.setAdapter(orderPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        if (type == 1) {
+            viewPager.setCurrentItem(1);
+        }else {
+            viewPager.setCurrentItem(0);
+        }
     }
 
     @Override
@@ -93,9 +117,24 @@ public class OrderFragment extends Fragment implements TabLayout.OnTabSelectedLi
         unbinder.unbind();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
     @OnClick(R.id.search_iv)
     public void onViewClicked() {
-        mainActivity.switchFragment(OrderSearchResultFragment.getIntance("")).addToBackStack(null).commitAllowingStateLoss();
+        if (!searchEt.getText().toString().isEmpty()) {
+            Intent intent = new Intent(mainActivity, OrderSearchResultActivity.class);
+            intent.putExtra(ParamUtil.SEARCH_CONTENT, searchEt.getText().toString());
+            startActivity(intent);
+            searchEt.setText("");
+        }
     }
 
     @Override
@@ -115,6 +154,6 @@ public class OrderFragment extends Fragment implements TabLayout.OnTabSelectedLi
 
     @OnClick(R.id.scan_rl)
     public void onScanRlClicked() {
-        mainActivity.switchFragment(ScanFragment.newInstance()).addToBackStack(null).commitAllowingStateLoss();
+        startActivity(new Intent(mainActivity, ScanActivity.class));
     }
 }

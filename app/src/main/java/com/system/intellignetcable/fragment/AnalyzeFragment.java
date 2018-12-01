@@ -1,6 +1,7 @@
 package com.system.intellignetcable.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,8 +17,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.system.intellignetcable.R;
+import com.system.intellignetcable.activity.IntelligentAnalysisActivity;
 import com.system.intellignetcable.activity.MainActivity;
 import com.system.intellignetcable.adapter.AnalyzeAdapter;
+import com.system.intellignetcable.util.ParamUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +81,6 @@ public class AnalyzeFragment extends Fragment implements AdapterView.OnItemClick
         list= new ArrayList<>();
         list.add("东三环中路9号");
         list.add("朝阳北路");
-        list.add("东三环中路9号");
-        list.add("朝阳北路");
         analyzeAdapter = new AnalyzeAdapter(getActivity(), list);
         analyzeLv.setAdapter(analyzeAdapter);
     }
@@ -112,11 +113,11 @@ public class AnalyzeFragment extends Fragment implements AdapterView.OnItemClick
 
     @OnClick(R.id.analyze_btn)
     public void onAnalyzeBtnClicked() {
-        mainActivity.switchFragment(IntelligentAnalysisFragment.getInstance()).addToBackStack(null).commitAllowingStateLoss();
+        startActivity(new Intent(mainActivity, IntelligentAnalysisActivity.class));
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mainActivity.switchFragment(IntelligentAnalysisFragment.getInstance()).addToBackStack(null).commitAllowingStateLoss();
+        startActivity(new Intent(mainActivity, IntelligentAnalysisActivity.class));
     }
 }

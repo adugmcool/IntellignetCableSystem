@@ -30,12 +30,12 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/mine_text_size_color"
-                android:text="@string/signs_number" />
+                android:text="@string/signs_number"
+                android:layout_gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/signs_number_et"
@@ -43,11 +43,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:cursorVisible="false"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 android:fontFamily="@font/notosanshans_regular"
                 android:hint="@string/please_input_signs_number"
+                android:textCursorDrawable="@null"
                 android:imeOptions="actionNext"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLines="1"
                 android:nextFocusForward="@id/place_et"
                 android:textColor="@color/color_FF4A4A4A"
@@ -84,12 +86,12 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 style="@style/mine_text_size_color"
-                android:text="@string/place_sheet" />
+                android:text="@string/place_sheet"
+                android:layout_gravity="center_vertical"/>
 
             <EditText
                 android:id="@+id/place_et"
@@ -97,12 +99,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:cursorVisible="true"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
                 android:fontFamily="@font/notosanshans_regular"
                 android:hint="@string/please_input_place_sheet"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLines="1"
+                android:textCursorDrawable="@null"
                 android:textColor="@color/color_FF4A4A4A"
                 android:textColorHint="@color/color_9B9B9B"
                 android:textSize="16sp" />
@@ -126,7 +130,7 @@
         android:layout_marginTop="10dp"
         android:divider="@null"
         android:dividerHeight="8dp"
-        android:listSelector="@null"
+        android:listSelector="@color/transparent"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" />
 

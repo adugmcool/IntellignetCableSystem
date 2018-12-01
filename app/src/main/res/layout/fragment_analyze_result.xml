@@ -31,7 +31,7 @@
                 style="@style/mine_text_size_color"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:text="XXXX工厂" />
+                android:text="XXXXX工厂" />
 
             <TextView
                 style="@style/mine_text_size_color"
@@ -89,28 +89,28 @@
                         android:id="@+id/fault_tv"
                         style="@style/mine_text_size_color"
                         android:layout_height="36dp"
-                        android:text="@string/fault"
+                        android:text="2017年10月出现一次故障"
                         android:textColor="@color/color_757575" />
 
                     <TextView
                         android:id="@+id/reason_tv"
                         style="@style/mine_text_size_color"
                         android:layout_height="36dp"
-                        android:text="@string/reason"
+                        android:text="高温"
                         android:textColor="@color/color_757575" />
 
                     <TextView
                         android:id="@+id/result_tv"
                         style="@style/mine_text_size_color"
                         android:layout_height="36dp"
-                        android:text="@string/processing_result"
+                        android:text="更换电缆"
                         android:textColor="@color/color_757575" />
 
                     <TextView
                         android:id="@+id/place_tv"
                         style="@style/mine_text_size_color"
                         android:layout_height="36dp"
-                        android:text="@string/place"
+                        android:text="加强巡查，检查电缆"
                         android:textColor="@color/color_757575" />
 
                 </LinearLayout>

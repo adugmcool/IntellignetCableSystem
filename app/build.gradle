@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'cable'
+            keyPassword 'cable789'
+            storeFile file('/Users/adu/Desktop/Cable.jks')
+            storePassword 'cable789'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.system.intellignetcable"
@@ -17,12 +25,22 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+            //说明so的路径为该libs路径，关联所有地图SDK的so文件
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     compile 'com.android.support:design:27.1.1'
     testImplementation 'junit:junit:4.12'
@@ -34,14 +52,15 @@ dependencies {
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.code.gson:gson:2.6.2'
-
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-15'
-//    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-15'//没有使用特殊Header，可以不加这行
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-15'
+    //没有使用特殊Header，可以不加这行
     //必须使用
     compile 'com.lzy.net:okgo:3.0.4'
     //以下三个选择添加，okrx和okrx2不能同时使用
     compile 'com.lzy.net:okrx:1.0.2'
-//    compile 'com.lzy.net:okrx2:2.0.2'
+    //    compile 'com.lzy.net:okrx2:2.0.2'
     compile 'com.lzy.net:okserver:2.0.5'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation files('libs/BaiduLBS_Android.jar')
 }

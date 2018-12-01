@@ -5,10 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.VideoView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.system.intellignetcable.R;
+import com.system.intellignetcable.bean.UsersListBean;
 
 import java.util.List;
 
@@ -22,12 +23,18 @@ import butterknife.ButterKnife;
 public class DispatchSheetAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
-    private List<String> stringList;
+    private List<UsersListBean.UsersBean> stringList;
+    private int currentSelector = -1;
 
-    public DispatchSheetAdapter(Context context, List<String> list) {
+    public DispatchSheetAdapter(Context context, List<UsersListBean.UsersBean> list) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.stringList = list;
+    }
+
+    public void setCurrentSelector(int currentSelector) {
+        this.currentSelector = currentSelector;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -52,16 +59,19 @@ public class DispatchSheetAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.adapter_dispatch_sheet_name, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.checkbox.setText(stringList.get(position));
+        viewHolder.checkTv.setText(stringList.get(position).getUserName());
+        viewHolder.checkIv.setSelected(currentSelector == position);
         return convertView;
     }
 
     static class ViewHolder {
-        @BindView(R.id.checkbox)
-        CheckBox checkbox;
+        @BindView(R.id.check_iv)
+        ImageView checkIv;
+        @BindView(R.id.check_tv)
+        TextView checkTv;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

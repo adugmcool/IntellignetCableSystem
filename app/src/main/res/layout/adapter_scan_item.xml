@@ -22,12 +22,13 @@
             android:textColor="@color/color_FF4D4D4D"
             android:fontFamily="@font/notosanshans_regular"/>
         
-        <Button
-            android:id="@+id/confirm_btn"
+        <TextView
+            android:id="@+id/confirm_tv"
             android:layout_width="93dp"
             android:layout_height="36dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:gravity="center"
             android:background="@drawable/selector_scan_btn"
             android:text="@string/lighting_confirm"
             android:textSize="14sp"
@@ -39,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/confirm_btn"
+            android:layout_toLeftOf="@id/confirm_tv"
             android:text="未上传"
             android:textColor="@color/color_757575"
             android:textSize="12sp"

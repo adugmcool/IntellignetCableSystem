@@ -67,16 +67,19 @@
                 android:weightSum="3">
 
                 <TextView
+                    android:id="@+id/pending_review_tv"
                     style="@style/mine_text_size_color"
                     android:layout_weight="1"
                     android:text="@string/pending_review" />
 
                 <TextView
+                    android:id="@+id/reviewed_tv"
                     style="@style/mine_text_size_color"
                     android:layout_weight="1"
                     android:text="@string/reviewed" />
 
                 <TextView
+                    android:id="@+id/rejected_tv"
                     style="@style/mine_text_size_color"
                     android:layout_weight="1"
                     android:text="@string/rejected" />

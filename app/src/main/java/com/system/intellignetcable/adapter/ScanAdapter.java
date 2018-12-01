@@ -62,8 +62,8 @@ public class ScanAdapter extends BaseAdapter {
     static class ViewHolder {
         @BindView(R.id.name_tv)
         TextView nameTv;
-        @BindView(R.id.confirm_btn)
-        Button confirmBtn;
+        @BindView(R.id.confirm_tv)
+        TextView confirmTv;
         @BindView(R.id.status_tv)
         TextView statusTv;
 

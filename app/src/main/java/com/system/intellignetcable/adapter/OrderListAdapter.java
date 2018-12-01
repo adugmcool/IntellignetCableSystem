@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.system.intellignetcable.R;
+import com.system.intellignetcable.bean.OrderListBean;
 
 import java.util.List;
 
@@ -22,9 +23,9 @@ import butterknife.ButterKnife;
 public class OrderListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
-    private List<String> list;
+    private List<OrderListBean.PageBean.ListBean> list;
 
-    public OrderListAdapter(Context context, List<String> list) {
+    public OrderListAdapter(Context context, List<OrderListBean.PageBean.ListBean> list) {
         this.context = context;
         this.list = list;
         this.inflater = LayoutInflater.from(context);
@@ -56,7 +57,23 @@ public class OrderListAdapter extends BaseAdapter {
         else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.orderNameTv.setText(list.get(position));
+        viewHolder.orderNameTv.setText(list.get(position).getWorkAddress());
+        if (list.get(position).getStatus() == 0){
+            viewHolder.statusTv.setText(R.string.unexecuted);
+            viewHolder.statusTv.setTextColor(context.getResources().getColor(R.color.color_757575));
+        }else if (list.get(position).getStatus() == 1){
+            viewHolder.statusTv.setText(R.string.submission);
+            viewHolder.statusTv.setTextColor(context.getResources().getColor(R.color.color_757575));
+        }else if (list.get(position).getStatus() == 2){
+            viewHolder.statusTv.setText(R.string.pending_review);
+            viewHolder.statusTv.setTextColor(context.getResources().getColor(R.color.color_FF1989FA));
+        }else if (list.get(position).getStatus() == 3){
+            viewHolder.statusTv.setText(R.string.finished);
+            viewHolder.statusTv.setTextColor(context.getResources().getColor(R.color.color_0DB300));
+        }else if (list.get(position).getStatus() == 4){
+            viewHolder.statusTv.setText(R.string.rejected);
+            viewHolder.statusTv.setTextColor(context.getResources().getColor(R.color.color_D0021B));
+        }
         return convertView;
     }
 

@@ -2,21 +2,17 @@ package com.system.intellignetcable.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.fragment.AnalyzeFragment;
-import com.system.intellignetcable.fragment.IntelligentAnalysisFragment;
 import com.system.intellignetcable.fragment.LocationFragment;
 import com.system.intellignetcable.fragment.MineFragment;
 import com.system.intellignetcable.fragment.OrderFragment;
-import com.system.intellignetcable.util.StatusBarColorUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,11 +31,12 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.mine_rb)
     RadioButton mineRb;
 
+    private FragmentManager fragmentManager;
     private OrderFragment orderFragment;
     private LocationFragment locationFragment;
     private AnalyzeFragment analyzeFragment;
     private MineFragment mineFragment;
-    private static Fragment currentFragment;
+    private Fragment currentFragment;
     private Fragment oldFragment;
 
     @Override
@@ -56,14 +53,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initData() {
+        fragmentManager = getSupportFragmentManager();
         orderFragment = OrderFragment.getInstance();
         locationFragment = LocationFragment.getInstance();
         analyzeFragment = AnalyzeFragment.getInstance();
         mineFragment = MineFragment.getInstance();
         switchFragment(oldFragment).commitAllowingStateLoss();
     }
-
-
 
     @OnClick({R.id.order_rb, R.id.location_rb, R.id.analyze_rb, R.id.mine_rb})
     public void onViewClicked(View view) {
@@ -84,7 +80,8 @@ public class MainActivity extends BaseActivity {
     }
 
     public FragmentTransaction switchFragment(Fragment targetFragment) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        hideSoftInput(fragmentItem);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (currentFragment != targetFragment) {
             if (currentFragment != null) {
                 fragmentTransaction.hide(currentFragment);
@@ -99,14 +96,10 @@ public class MainActivity extends BaseActivity {
         return fragmentTransaction;
     }
 
-    public static void setCurrentFragment(Fragment fragment){
-        currentFragment = fragment;
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
-
-    public Fragment getCurrentFragment(){
-        return currentFragment;
-    }
-
 
     /**
      * 当活动被回收时，存储当前状态
@@ -116,12 +109,8 @@ public class MainActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // 存储fragment状态
-        getSupportFragmentManager().putFragment(outState, "Fragment", currentFragment);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        currentFragment = null;
+        if (currentFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "Fragment", currentFragment);
+        }
     }
 }

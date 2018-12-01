@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/detail_ll"
     android:background="@color/color_F0F3F5"
-    android:clickable="true"
     android:orientation="vertical">
 
     <include layout="@layout/fragment_title_bar" />
@@ -21,7 +21,6 @@
             android:layout_height="39dp"
             android:fontFamily="@font/notosanshans_regular"
             android:gravity="center"
-            android:text="未执行"
             android:textColor="@color/color_757575"
             android:textSize="16sp" />
 
@@ -76,41 +75,63 @@
                     android:id="@+id/signs_number_tv"
                     style="@style/mine_text_size_color"
                     android:layout_height="36dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="10"
                     android:textColor="@color/color_757575"/>
 
                 <TextView
                     android:id="@+id/dispatch_time_tv"
                     style="@style/mine_text_size_color"
                     android:layout_height="36dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="2018.11.11"
                     android:textColor="@color/color_757575"/>
 
                 <TextView
                     android:id="@+id/dispatch_name_tv"
                     style="@style/mine_text_size_color"
                     android:layout_height="36dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="张山"
                     android:textColor="@color/color_757575" />
 
                 <TextView
                     android:id="@+id/place_tv"
                     style="@style/mine_text_size_color"
                     android:layout_height="36dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="东三环中路"
                     android:textColor="@color/color_757575"/>
 
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/status_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="8dp"
+        android:weightSum="2"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/pass_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_analyze_btn"
+            android:text="@string/pass"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/notosanshans_regular"
+            android:layout_marginRight="20dp"/>
+
+        <Button
+            android:id="@+id/reject_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_mine_btn"
+            android:text="@string/reject"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/notosanshans_regular"/>
 
     </LinearLayout>
 

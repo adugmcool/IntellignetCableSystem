@@ -27,5 +27,6 @@ public class NavigationActivity extends BaseActivity{
         }else {
             startActivity(new Intent(this, MainActivity.class));
         }
+        finish();
     }
 }

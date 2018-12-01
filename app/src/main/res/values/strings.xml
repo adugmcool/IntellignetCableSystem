@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IntellignetCableSystem</string>
+    <string name="app_name">智能电缆系统</string>
     <string name="work_order">工单</string>
     <string name="location">地图</string>
     <string name="analyze">分析</string>
@@ -37,11 +37,18 @@
     <string name="submit">提交</string>
     <string name="worksheet_status">工单状态</string>
     <string name="picture_info">图片信息</string>
+    <string name="pass">通过</string>
+    <string name="reject">驳回</string>
+    <string name="unexecuted">未执行</string>
+    <string name="submission">正在提交</string>
+    <string name="finished">已完成</string>
+    <string name="status">状态</string>
+    <string name="query_template">查询模板</string>
+    <string name="remember_password">记住密码</string>
+    <string name="signage_management">标识牌管理</string>
 
     <string-array name="status">
-        <item>状态</item>
         <item>通过</item>
         <item>驳回</item>
-        <item>指派</item>
     </string-array>
 </resources>

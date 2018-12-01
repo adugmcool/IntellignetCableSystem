@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +44,8 @@ public class LoginActivity extends BaseActivity {
     Button loginBtn;
     @BindView(R.id.register_tv)
     TextView registerTv;
+    @BindView(R.id.password_cb)
+    CheckBox passwordCb;
     private Gson gson;
 
     @Override
@@ -57,6 +60,9 @@ public class LoginActivity extends BaseActivity {
     private void initData() {
         titleTv.setText(R.string.login);
         gson = new Gson();
+        loginNameEt.setText(((String)SharedPreferencesUtil.get(this, ParamUtil.LOGIN_PHONE, "")));
+        loginPasswordEt.setText(((String)SharedPreferencesUtil.get(this, ParamUtil.LOGIN_PASSWORD, "")));
+        passwordCb.setChecked(((Boolean) SharedPreferencesUtil.get(this, ParamUtil.REMEMBER_PASSWORD, false)));
     }
 
     private void initView() {
@@ -77,17 +83,28 @@ public class LoginActivity extends BaseActivity {
         loginPost(phone, password);
     }
 
-    private void loginPost(String phone, String password) {
+    private void loginPost(final String phone, final String password) {
         OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_LOGIN + "?mobile=" + phone + "&password=" + password)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.LOGIN_PHONE, phone);
+                        if (passwordCb.isChecked()) {
+                            SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.LOGIN_PASSWORD, password);
+                            SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.REMEMBER_PASSWORD, true);
+                        }else {
+                            SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.LOGIN_PASSWORD, "");
+                            SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.REMEMBER_PASSWORD, false);
+                        }
+
                         LoginBean loginBean = gson.fromJson(response.body(), LoginBean.class);
                         if (loginBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.TOKEN, loginBean.getToken());
                             SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.USER_ID, loginBean.getUser().getUserId());
+                            SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.TYPE, loginBean.getUser().getType());
+                            finish();
                         } else {
                             Toast.makeText(LoginActivity.this, loginBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }

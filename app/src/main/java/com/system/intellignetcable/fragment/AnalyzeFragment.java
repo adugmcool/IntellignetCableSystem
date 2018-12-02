@@ -35,7 +35,7 @@ import butterknife.Unbinder;
  * Created by zydu on 2018/11/21.
  */
 
-public class AnalyzeFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class AnalyzeFragment extends BaseFragment implements AdapterView.OnItemClickListener{
     private static AnalyzeFragment analyzeFragment;
     @BindView(R.id.search_iv)
     ImageView searchIv;

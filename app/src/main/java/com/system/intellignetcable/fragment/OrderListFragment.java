@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -47,7 +48,7 @@ import butterknife.Unbinder;
  * Created by adu on 2018/11/25.
  */
 
-public class OrderListFragment extends Fragment implements AdapterView.OnItemClickListener, OnRefreshListener, OnLoadMoreListener {
+public class OrderListFragment extends BaseFragment implements AdapterView.OnItemClickListener, OnRefreshListener, OnLoadMoreListener {
     private static final String TAG = "OrderListFragment";
     @BindView(R.id.order_list)
     ListView orderList;
@@ -56,6 +57,8 @@ public class OrderListFragment extends Fragment implements AdapterView.OnItemCli
     RelativeLayout dispatchSheetRl;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.hint_tv)
+    TextView hintTv;
     private OrderListAdapter orderListAdapter;
     private List<OrderListBean.PageBean.ListBean> list;
     public static final String ARGS_PAGE = "args_page";
@@ -92,6 +95,7 @@ public class OrderListFragment extends Fragment implements AdapterView.OnItemCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_list, container, false);
         unbinder = ButterKnife.bind(this, view);
+        setLoadingView(hintTv, refreshLayout);
         initData();
         setListener();
         return view;
@@ -104,6 +108,7 @@ public class OrderListFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     private void initData() {
+        showLoading();
         refreshLayout.setRefreshHeader(new MaterialHeader(mainActivity).setShowBezierWave(false));
         refreshLayout.setRefreshFooter(new ClassicsFooter(mainActivity));
         gson = new Gson();
@@ -155,22 +160,27 @@ public class OrderListFragment extends Fragment implements AdapterView.OnItemCli
                         refreshLayout.finishRefresh();
                         OrderListBean orderListBean = gson.fromJson(response.body(), OrderListBean.class);
                         if (orderListBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            if (orderListBean.getPage().getList() != null && orderListBean.getPage().getList().size() > 0) {
+                            if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() == 0){
+                                showNoData();
+                            } else if (orderListBean.getPage().getList() != null && orderListBean.getPage().getList().size() > 0) {
+                                showDataSuc();
                                 list.addAll(orderListBean.getPage().getList());
+                                orderListAdapter.notifyDataSetChanged();
                             }
-                            orderListAdapter.notifyDataSetChanged();
                             if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() < 10) {
                                 refreshLayout.setEnableLoadMore(false);
                             } else {
                                 refreshLayout.setEnableLoadMore(true);
                             }
                         } else {
+                            showFail();
                             Toast.makeText(getActivity(), orderListBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
+                        showFail();
                         refreshLayout.finishLoadMore();
                         refreshLayout.finishRefresh();
                         Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();

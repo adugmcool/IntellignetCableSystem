@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -43,6 +44,8 @@ import butterknife.Unbinder;
 
 public class OrderSearchResultActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener, AdapterView.OnItemClickListener {
     private static final String TAG = "OrderSearchFragment";
+    @BindView(R.id.hint_tv)
+    TextView hintTv;
     private String searchString;
     @BindView(R.id.back_iv)
     ImageView backIv;
@@ -69,10 +72,12 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_order_search_result);
         ButterKnife.bind(this);
+        setLoadingView(hintTv, refreshLayout);
         initData();
     }
 
     private void initData() {
+        showLoading();
         refreshLayout.setRefreshHeader(new MaterialHeader(this).setShowBezierWave(false));
         refreshLayout.setRefreshFooter(new ClassicsFooter(this));
         gson = new Gson();
@@ -95,7 +100,7 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
     @OnClick(R.id.search_iv)
     public void onSearchIvClicked() {
         hideSoftInput(searchIv);
-        if (!searchEt.getText().toString().isEmpty()){
+        if (!searchEt.getText().toString().isEmpty()) {
             pageIndex = 1;
             list.clear();
             idList.clear();
@@ -114,25 +119,30 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
                         refreshLayout.finishRefresh();
                         OrderListBean orderListBean = gson.fromJson(response.body(), OrderListBean.class);
                         if (orderListBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            if (orderListBean.getPage().getList().size() > 0) {
+                            if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() == 0){
+                                showNoData();
+                            } else if (orderListBean.getPage().getList().size() > 0) {
                                 for (int i = 0; i < orderListBean.getPage().getList().size(); i++) {
                                     list.add(orderListBean.getPage().getList().get(i).getWorkAddress());
                                     idList.add(orderListBean.getPage().getList().get(i).getWorkOrderId());
                                 }
+                                analyzeAdapter.notifyDataSetChanged();
+                                showDataSuc();
                             }
-                            analyzeAdapter.notifyDataSetChanged();
-                            if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() < 10){
+                            if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() < 10) {
                                 refreshLayout.setEnableLoadMore(false);
-                            }else {
+                            } else {
                                 refreshLayout.setEnableLoadMore(true);
                             }
                         } else {
+                            showFail();
                             Toast.makeText(OrderSearchResultActivity.this, orderListBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
+                        showFail();
                         refreshLayout.finishLoadMore();
                         refreshLayout.finishRefresh();
                         Toast.makeText(OrderSearchResultActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();

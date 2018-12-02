@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" 
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
     
     <TextView
         android:id="@+id/list_name_tv"
@@ -12,7 +13,8 @@
         android:textSize="16sp"
         android:textColor="@color/color_757575"
         android:fontFamily="@font/notosanshans_regular"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="28dp"/>
     
     <Spinner
         android:id="@+id/list_spinner"
@@ -20,6 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:dropDownVerticalOffset="30dp" />
+        android:dropDownVerticalOffset="30dp"
+        android:layout_marginRight="15dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"/>
 
 </LinearLayout>

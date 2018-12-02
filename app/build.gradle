@@ -6,7 +6,7 @@ android {
         config {
             keyAlias 'cable'
             keyPassword 'cable789'
-            storeFile file('/Users/adu/Desktop/Cable.jks')
+            storeFile file('/Users/adu/Downloads/Cable.jks')
             storePassword 'cable789'
         }
     }

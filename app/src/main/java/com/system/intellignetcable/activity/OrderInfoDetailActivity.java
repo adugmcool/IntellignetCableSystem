@@ -21,9 +21,6 @@ import com.system.intellignetcable.util.ParamUtil;
 import com.system.intellignetcable.util.SharedPreferencesUtil;
 import com.system.intellignetcable.util.UrlUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,6 +31,10 @@ import butterknife.OnClick;
 
 public class OrderInfoDetailActivity extends BaseActivity {
     private static final String TAG = "OrderInfoDetailActivity";
+    @BindView(R.id.content_ll)
+    LinearLayout contentLl;
+    @BindView(R.id.hint_tv)
+    TextView hintTv;
 
     private int workOrderId;
     @BindView(R.id.detail_ll)
@@ -66,6 +67,7 @@ public class OrderInfoDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_order_info_detail);
         ButterKnife.bind(this);
+        setLoadingView(hintTv, contentLl);
         initData();
     }
 
@@ -74,6 +76,7 @@ public class OrderInfoDetailActivity extends BaseActivity {
         workOrderId = getIntent().getIntExtra(ParamUtil.WORK_ORDER_ID, 0);
         type = (int) SharedPreferencesUtil.get(this, ParamUtil.TYPE, 2);
         gson = new Gson();
+        showLoading();
         orderDetail(workOrderId);
     }
 
@@ -92,14 +95,21 @@ public class OrderInfoDetailActivity extends BaseActivity {
                     public void onSuccess(Response<String> response) {
                         OrderInfoDetailBean orderInfoDetailBean = gson.fromJson(response.body(), OrderInfoDetailBean.class);
                         if (orderInfoDetailBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            updateData(orderInfoDetailBean.getWorkOrder());
+                            if (orderInfoDetailBean.getWorkOrder() == null){
+                                showNoData();
+                            }else {
+                                showDataSuc();
+                                updateData(orderInfoDetailBean.getWorkOrder());
+                            }
                         } else {
+                            showFail();
                             Toast.makeText(OrderInfoDetailActivity.this, orderInfoDetailBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
+                        showFail();
                         Toast.makeText(OrderInfoDetailActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }
@@ -120,7 +130,7 @@ public class OrderInfoDetailActivity extends BaseActivity {
             statusTv.setTextColor(getResources().getColor(R.color.color_FF1989FA));
             if (type == 1) {
                 statusLl.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 statusLl.setVisibility(View.GONE);
             }
         } else if (workOrderBean.getStatus() == 3) {
@@ -141,7 +151,7 @@ public class OrderInfoDetailActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus){
+        if (hasFocus) {
             orderDetail(workOrderId);
         }
     }

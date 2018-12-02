@@ -13,6 +13,7 @@
         android:layout_marginTop="7dp">
 
     <TextView
+        android:id="@+id/type_tv"
         style="@style/mine_text_size_color"
         android:layout_height="39dp"
         android:text="@string/worksheet_info" />

@@ -12,4 +12,11 @@
         android:layout_height="fill_parent"
         android:clickable="true" />
 
+    <include layout="@layout/location_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+
 </RelativeLayout>

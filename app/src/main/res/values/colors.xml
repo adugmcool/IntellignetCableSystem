@@ -30,4 +30,8 @@
     <color name="color_DE000000">#DE000000</color>
     <color name="color_0DB300">#0DB300</color>
     <color name="color_D0021B">#D0021B</color>
+    <color name="gray_slight">#dcdcdc</color>
+    <color name="gray_4">#333333</color>
+    <color name="color_F200CFDA">#F200CFDA</color>
+    <color name="color_F200C5CE">#F200C5CE</color>
 </resources>

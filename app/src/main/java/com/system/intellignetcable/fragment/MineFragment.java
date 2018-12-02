@@ -45,7 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by zydu on 2018/11/21.
  */
 
-public class MineFragment extends Fragment {
+public class MineFragment extends BaseFragment {
     private static final String TAG = "MineFragment";
     private static MineFragment mineFragment;
     @BindView(R.id.head_photo)

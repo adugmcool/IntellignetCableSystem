@@ -1,5 +1,6 @@
 package com.system.intellignetcable.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,6 +48,7 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.password_cb)
     CheckBox passwordCb;
     private Gson gson;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public class LoginActivity extends BaseActivity {
             Toast.makeText(this, "请输入密码！", Toast.LENGTH_SHORT).show();
             return;
         }
+        progressDialog = showProgressDialog(getResources().getString(R.string.logon));
         loginPost(phone, password);
     }
 
@@ -89,6 +92,7 @@ public class LoginActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        progressDialog.dismiss();
                         SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.LOGIN_PHONE, phone);
                         if (passwordCb.isChecked()) {
                             SharedPreferencesUtil.put(LoginActivity.this, ParamUtil.LOGIN_PASSWORD, password);
@@ -112,6 +116,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(Response<String> response) {
+                        progressDialog.dismiss();
                         Toast.makeText(LoginActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }

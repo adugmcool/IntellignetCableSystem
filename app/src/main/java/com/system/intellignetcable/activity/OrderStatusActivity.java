@@ -1,5 +1,6 @@
 package com.system.intellignetcable.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class OrderStatusActivity extends BaseActivity {
     private int type;
     private Gson gson;
     private int workOrderId;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,9 +84,10 @@ public class OrderStatusActivity extends BaseActivity {
     public void onSubmitBtnClicked() {
         String content = contentEt.getText().toString();
         if (content.isEmpty()){
-            Toast.makeText(OrderStatusActivity.this, "请在编辑框内输入内容！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(OrderStatusActivity.this, "请输入审核意见！", Toast.LENGTH_SHORT).show();
             return;
         }
+        progressDialog = showProgressDialog(getResources().getString(R.string.submiting));
         orderCheck(content, type, workOrderId);
     }
 
@@ -95,6 +98,7 @@ public class OrderStatusActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        progressDialog.dismiss();
                         OrderCheckBean orderCheckBean = gson.fromJson(response.body(), OrderCheckBean.class);
                         if (orderCheckBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
                             finish();
@@ -105,6 +109,7 @@ public class OrderStatusActivity extends BaseActivity {
 
                     @Override
                     public void onError(Response<String> response) {
+                        progressDialog.dismiss();
                         Toast.makeText(OrderStatusActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "请求错误："+ response.code() + "-------" + response.message());
                     }

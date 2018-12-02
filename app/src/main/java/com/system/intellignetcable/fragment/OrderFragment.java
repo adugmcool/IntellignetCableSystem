@@ -36,7 +36,7 @@ import butterknife.Unbinder;
  * Created by zydu on 2018/11/21.
  */
 
-public class OrderFragment extends Fragment implements TabLayout.OnTabSelectedListener {
+public class OrderFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
     private static OrderFragment orderFragment;
     @BindView(R.id.search_iv)
     ImageView searchIv;

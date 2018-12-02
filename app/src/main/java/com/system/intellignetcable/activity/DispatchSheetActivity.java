@@ -1,6 +1,7 @@
 package com.system.intellignetcable.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +56,10 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
     Button dispatchBtn;
     @BindView(R.id.right_iv)
     TextView rightIv;
+    @BindView(R.id.content_rl)
+    RelativeLayout contentRl;
+    @BindView(R.id.hint_tv)
+    TextView hintTv;
     private Gson gson;
     private DispatchSheetAdapter dispatchSheetAdapter;
     private List<UsersListBean.UsersBean> list;
@@ -61,13 +67,16 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
     private List<String> templateList;
     private int currentPos = -1;
     private int currentTemolatPos = -1;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_dispatch_sheet);
         ButterKnife.bind(this);
+        setLoadingView(hintTv, contentRl);
         initData();
+
     }
 
     private void initData() {
@@ -79,8 +88,8 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
         templatesBeanList = new ArrayList<>();
         templateList = new ArrayList<>();
         dispatchList.setOnItemClickListener(this);
+        showLoading();
         usersList();
-        queryTemplate();
     }
 
     @OnClick(R.id.back_iv)
@@ -99,23 +108,24 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
         } else if (address.isEmpty()) {
             Toast.makeText(DispatchSheetActivity.this, "请输入位置！", Toast.LENGTH_SHORT).show();
             return;
-        }else if (currentPos == -1){
+        } else if (currentPos == -1) {
             Toast.makeText(DispatchSheetActivity.this, "请选择指派用户！", Toast.LENGTH_SHORT).show();
             return;
-        }else if (currentTemolatPos == -1){
+        } else if (currentTemolatPos == -1) {
             Toast.makeText(DispatchSheetActivity.this, "请选择模板！", Toast.LENGTH_SHORT).show();
             return;
         }
+        progressDialog = showProgressDialog(getResources().getString(R.string.dispatching));
         createOrder(Integer.parseInt(num), address, list.get(currentPos).getUserId(), userId, templatesBeanList.get(currentTemolatPos).getUserTeamplateId());
     }
 
     // 展示模板列表
-    private void showTemplateDialog(List<String> list){
+    private void showTemplateDialog(List<String> list) {
         final String[] items = new String[list.size()];
-        for (int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             items[i] = list.get(i);
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,AlertDialog.THEME_HOLO_LIGHT);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
         builder.setTitle("请选择:");
         builder.setSingleChoiceItems(items, -1,
                 new DialogInterface.OnClickListener() {
@@ -140,6 +150,7 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        progressDialog.dismiss();
                         OrderCheckBean orderCheckBean = gson.fromJson(response.body(), OrderCheckBean.class);
                         if (orderCheckBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
                             finish();
@@ -150,13 +161,14 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
 
                     @Override
                     public void onError(Response<String> response) {
+                        progressDialog.dismiss();
                         Toast.makeText(DispatchSheetActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }
                 });
     }
 
-    private void usersList(){
+    private void usersList() {
         OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_USERS)
                 .tag(this)
                 .headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
@@ -169,7 +181,9 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
                             list = usersListBean.getUsers();
                             dispatchSheetAdapter = new DispatchSheetAdapter(DispatchSheetActivity.this, list);
                             dispatchList.setAdapter(dispatchSheetAdapter);
+                            queryTemplate();
                         } else {
+                            showFail();
                             Toast.makeText(DispatchSheetActivity.this, usersListBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -177,12 +191,13 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
                     @Override
                     public void onError(Response<String> response) {
                         Toast.makeText(DispatchSheetActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();
+                        showFail();
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }
                 });
     }
 
-    private void queryTemplate(){
+    private void queryTemplate() {
         OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_TEMPLATES)
                 .tag(this)
                 .headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
@@ -193,16 +208,19 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
                         TemplateListBean templateListBean = gson.fromJson(response.body(), TemplateListBean.class);
                         if (templateListBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
                             templatesBeanList = templateListBean.getTemplates();
-                            for (int i = 0; i < templatesBeanList.size(); i++){
+                            for (int i = 0; i < templatesBeanList.size(); i++) {
                                 templateList.add(templatesBeanList.get(i).getUserTeamplateName());
                             }
+                            showDataSuc();
                         } else {
+                            showFail();
                             Toast.makeText(DispatchSheetActivity.this, templateListBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
+                        showFail();
                         Toast.makeText(DispatchSheetActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }
@@ -217,7 +235,7 @@ public class DispatchSheetActivity extends BaseActivity implements AdapterView.O
 
     @OnClick(R.id.right_iv)
     public void onViewClicked() {
-        if (templateList.size() > 0){
+        if (templateList.size() > 0) {
             showTemplateDialog(templateList);
         }
     }

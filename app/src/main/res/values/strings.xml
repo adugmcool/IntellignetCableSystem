@@ -46,9 +46,20 @@
     <string name="query_template">查询模板</string>
     <string name="remember_password">记住密码</string>
     <string name="signage_management">标识牌管理</string>
+    <string name="photograph">拍照</string>
+    <string name="choose_phone_album">从手机相册中选择</string>
+    <string name="cancel">取消</string>
+    <string name="data_loading">数据加载中...</string>
+    <string name="data_load_fail">数据加载失败</string>
+    <string name="not_data">暂无数据</string>
+    <string name="logon">登录中...</string>
+    <string name="dispatching">指派中...</string>
+    <string name="submiting">提交中...</string>
 
     <string-array name="status">
         <item>通过</item>
         <item>驳回</item>
     </string-array>
+
+    <item type="id" name="cable_id"></item>
 </resources>

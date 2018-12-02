@@ -40,8 +40,8 @@ import butterknife.OnClick;
  * Created by adu on 2018/11/30.
  */
 
-public class OrderStatusListActivity extends BaseActivity  implements AdapterView.OnItemClickListener, OnRefreshListener, OnLoadMoreListener {
-    private static final String TAG = "OrderStatusListFragment";
+public class OrderStatusListActivity extends BaseActivity implements AdapterView.OnItemClickListener, OnRefreshListener, OnLoadMoreListener {
+    private static final String TAG = "OrderStatusListActivity";
     @BindView(R.id.back_iv)
     ImageView backIv;
     @BindView(R.id.title_tv)
@@ -51,6 +51,8 @@ public class OrderStatusListActivity extends BaseActivity  implements AdapterVie
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
     private static int status;
+    @BindView(R.id.hint_tv)
+    TextView hintTv;
     private int pageIndex = 1;
     private int pageSize = 10;
     private Gson gson;
@@ -64,6 +66,7 @@ public class OrderStatusListActivity extends BaseActivity  implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_status_list);
         ButterKnife.bind(this);
+        setLoadingView(hintTv, refreshLayout);
         gson = new Gson();
         setListener();
         initData();
@@ -74,15 +77,16 @@ public class OrderStatusListActivity extends BaseActivity  implements AdapterVie
         refreshLayout.setRefreshFooter(new ClassicsFooter(this));
         listBeans = new ArrayList<>();
         status = getIntent().getIntExtra(ParamUtil.ORDER_STATUS, 0);
+        showLoading();
         updateData();
     }
 
-    private void updateData(){
-        if (status == 2){
+    private void updateData() {
+        if (status == 2) {
             titleTv.setText(R.string.pending_review);
-        }else if (status == 3){
+        } else if (status == 3) {
             titleTv.setText(R.string.reviewed);
-        }else {
+        } else {
             titleTv.setText(R.string.rejected);
         }
         userId = (int) SharedPreferencesUtil.get(this, ParamUtil.USER_ID, 0);
@@ -123,8 +127,8 @@ public class OrderStatusListActivity extends BaseActivity  implements AdapterVie
         getList(userId, type, String.valueOf(pageIndex), String.valueOf(pageSize), status);
     }
 
-    private void getList(long userId, int type, String pageNo, String pageSize, int status){
-        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_LIST + "?userId="+userId + "&type=" + type + "&pageNo=" + pageNo + "&pageSize=" + pageSize + "&status=" + status)
+    private void getList(long userId, int type, String pageNo, String pageSize, int status) {
+        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_LIST + "?userId=" + userId + "&type=" + type + "&pageNo=" + pageNo + "&pageSize=" + pageSize + "&status=" + status)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -133,39 +137,38 @@ public class OrderStatusListActivity extends BaseActivity  implements AdapterVie
                         refreshLayout.finishLoadMore();
                         OrderListBean orderListBean = gson.fromJson(response.body(), OrderListBean.class);
                         if (orderListBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            if (orderListBean.getPage().getList() != null && orderListBean.getPage().getList().size()>0){
-                                    listBeans.addAll(orderListBean.getPage().getList());
+                            if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() == 0){
+                                showNoData();
+                            }else if (orderListBean.getPage().getList() != null && orderListBean.getPage().getList().size() > 0) {
+                                showDataSuc();
+                                listBeans.addAll(orderListBean.getPage().getList());
+                                orderListAdapter.notifyDataSetChanged();
                             }
-                            orderListAdapter.notifyDataSetChanged();
                             if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() < 10) {
                                 refreshLayout.setEnableLoadMore(false);
                             } else {
                                 refreshLayout.setEnableLoadMore(true);
                             }
-                        }else {
+                        } else {
+                            showFail();
                             Toast.makeText(OrderStatusListActivity.this, orderListBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
+                        showFail();
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadMore();
                         Toast.makeText(OrderStatusListActivity.this, "请求错误！", Toast.LENGTH_SHORT).show();
-                        Log.i(TAG, "请求错误："+ response.code() + "-------" + response.message());
+                        Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }
                 });
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus){
-            if (status == 2){ //待审核
-                listBeans.clear();
-                pageIndex = 1;
-                getList(userId, type, String.valueOf(pageIndex), String.valueOf(pageSize), status);
-            }
-        }
+    protected void onStop() {
+        super.onStop();
+        listBeans.clear();
     }
 }

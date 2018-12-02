@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_slight">
+
+    <TextView
+        android:id="@+id/photograph_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="@color/gray_4"
+        android:textSize="14sp"
+        android:text="@string/photograph"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:gravity="center"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_33000000"/>
+
+
+    <TextView
+        android:id="@+id/local_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="@color/gray_4"
+        android:textSize="14sp"
+        android:text="@string/choose_phone_album"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/cancel_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/gray_4"
+        android:textSize="14sp"
+        android:text="@string/cancel"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"
+        android:gravity="center"/>
+
+</LinearLayout>

@@ -52,4 +52,14 @@
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    <TextView
+        android:id="@+id/hint_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:gravity="center"
+        android:textColor="@color/color_FF4A4A4A"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
 </LinearLayout>

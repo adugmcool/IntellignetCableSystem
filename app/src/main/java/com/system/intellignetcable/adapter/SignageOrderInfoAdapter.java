@@ -204,7 +204,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
             if(list.get(position -1).getFieldName().equals("cableNumber")){
                 Log.i("onBindViewHolder", "position : " + position + " --- " + (new Gson().toJson(list)));
             }
-            final String fieldName = list.get(position - 1).getFieldName();
+            final String fieldName = list.get(position - 1).getFieldDesc();
             final String fieldValue = list.get(position -1).getFieldValue();
             ((TextHolder) holder).textEt.setTag(R.id.cable_id, position);
             ((TextHolder) holder).textNameTv.setText(fieldName + ":");
@@ -227,7 +227,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
                 public void afterTextChanged(Editable s) {
                     if(position == (int)((TextHolder) holder).textEt.getTag(R.id.cable_id)){
                         for (int i = 0; i < list.size(); i++) {
-                            String name = list.get(i).getFieldName();
+                            String name = list.get(i).getFieldDesc();
                             if(name.equals(fieldName)){
                                 list.get(i).setFieldValue(s.toString());
                                 break;
@@ -241,7 +241,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
             ((TextHolder) holder).textEt.addTextChangedListener(textWatcher);
             ((TextHolder) holder).textEt.setTag(textWatcher);
         } else if (holder instanceof DateHolder) {
-            ((DateHolder) holder).dateNameTv.setText(list.get(position -1).getFieldName() + ":");
+            ((DateHolder) holder).dateNameTv.setText(list.get(position -1).getFieldDesc() + ":");
             if (list.get(position -1).getFieldValue() != null) {
                 ((DateHolder) holder).dateTv.setText(toDate(list.get(position -1).getFieldValue()));
                 list.get(position -1).setFieldValue(toDate(list.get(position -1).getFieldValue()));
@@ -285,7 +285,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
                 }
             });
         } else if (holder instanceof ListHolder){
-            ((ListHolder) holder).listNameTv.setText(list.get(position -1).getFieldName() + ":");
+            ((ListHolder) holder).listNameTv.setText(list.get(position -1).getFieldDesc() + ":");
             if (list.get(position -1).getDicts() != null && list.get(position -1).getDicts().size() > 0) {
                 List<String> values = new ArrayList<>();
                 int selectItem = -1;

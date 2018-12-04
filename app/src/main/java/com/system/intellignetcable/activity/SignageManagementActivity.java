@@ -25,6 +25,7 @@ import com.jph.takephoto.model.TResult;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.PostRequest;
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.adapter.ImageAdapter;
 import com.system.intellignetcable.adapter.SignageOrderInfoAdapter;
@@ -232,12 +233,14 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
     private void saveOrUpdate(String epc, int userId, int workOrderId, String imagesUrls, String longitude, String latitude, String detailAddress, String ss, List<File> files) {
         Log.i(TAG, "urlString------" + UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
                 + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&" + "detailAddress=" + detailAddress + "&" + ss);
-        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
+        PostRequest request = OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
                 + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&" + "detailAddress=" + detailAddress + "&" + ss)
                 .tag(this)
-                .isMultipart(true)
-                .addFileParams("picfiles", files)
-                .headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
+                .isMultipart(true);
+                if(!files.isEmpty()){
+                    request.addFileParams("picfiles", files);
+                }
+                request.headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

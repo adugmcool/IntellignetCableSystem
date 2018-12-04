@@ -1,6 +1,9 @@
 package com.system.intellignetcable.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,6 +40,7 @@ import com.system.intellignetcable.util.UrlUtils;
 import com.system.intellignetcable.view.StringListPopupWindow;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -237,10 +241,12 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
                 + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&" + "detailAddress=" + detailAddress + "&" + ss)
                 .tag(this)
                 .isMultipart(true);
-                if(!files.isEmpty()){
-                    request.addFileParams("picfiles", files);
-                }
-                request.headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
+        if (!files.isEmpty()) {
+            request.addFileParams("picfiles", files);
+        } else {
+            request.params("avatar\"; filename=\"" + "1.png", drawableToFile(SignageManagementActivity.this, R.drawable.login_head, "1.png"));
+        }
+        request.headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -260,6 +266,41 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }
                 });
+    }
+
+    /**
+     * drawable转为file
+     *
+     * @param mContext
+     * @param drawableId drawable的ID
+     * @param fileName   转换后的文件名
+     * @return
+     */
+    public File drawableToFile(Context mContext, int drawableId, String fileName) {
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), drawableId);
+        String defaultPath = mContext.getFilesDir()
+                .getAbsolutePath() + "/defaultGoodInfo";
+        File file = new File(defaultPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String defaultImgPath = defaultPath + "/" + fileName;
+        file = new File(defaultImgPath);
+        if(file.exists()){
+            return file;
+        }
+        try {
+            file.createNewFile();
+
+            FileOutputStream fOut = new FileOutputStream(file);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 20, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
     @OnClick(R.id.right_iv)

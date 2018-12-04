@@ -26,6 +26,7 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.system.intellignetcable.R;
@@ -69,7 +70,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
     private boolean isFirstLoc = true; // 是否首次定位
     private MyLocationData locData;
     private BaiduMap mBaiduMap;
-    private MapView mapView;
+    private TextureMapView mapView;
     private double mCurrentLat;
     private double mCurrentLon;
     private String mCurrentAdress;
@@ -417,7 +418,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
 
     class LocationHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.location_mv)
-        MapView locationMv;
+        TextureMapView locationMv;
 
         LocationHolder(View view) {
             super(view);

@@ -229,16 +229,16 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
         Log.i(TAG, "urlString----" + sb.substring(0, sb.length() - 1));
         saveOrUpdate(signageManagementBean.getSignBoard().getEpc(), signageManagementBean.getSignBoard().getUserId(),
                 signageManagementBean.getSignBoard().getWorkOrderId(), getImageUrls(),
-                String.valueOf(signageOrderInfoAdapter.getmCurrentLon()), String.valueOf(signageOrderInfoAdapter.getmCurrentLat()),
+                String.valueOf(signageOrderInfoAdapter.getmCurrentLon()), String.valueOf(signageOrderInfoAdapter.getmCurrentLat()),signageOrderInfoAdapter.getDistrictName(),
                 signageOrderInfoAdapter.getmCurrentAdress(), sb.substring(0, sb.length() - 1), picFiles);
     }
 
     //保存或修改epc
-    private void saveOrUpdate(String epc, int userId, int workOrderId, String imagesUrls, String longitude, String latitude, String detailAddress, String ss, List<File> files) {
+    private void saveOrUpdate(String epc, int userId, int workOrderId, String imagesUrls, String longitude, String latitude, String districtName, String detailAddress, String ss, List<File> files) {
         Log.i(TAG, "urlString------" + UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
                 + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&" + "detailAddress=" + detailAddress + "&" + ss);
         PostRequest request = OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
-                + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&" + "detailAddress=" + detailAddress + "&" + ss)
+                + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&"+ "districtName=" + districtName + "&" + "detailAddress=" + detailAddress + "&" + ss)
                 .tag(this)
                 .isMultipart(true);
         if (!files.isEmpty()) {

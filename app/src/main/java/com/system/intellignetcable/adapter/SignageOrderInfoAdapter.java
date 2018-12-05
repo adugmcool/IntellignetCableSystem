@@ -73,6 +73,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
     private TextureMapView mapView;
     private double mCurrentLat;
     private double mCurrentLon;
+    private String districtName;
     private String mCurrentAdress;
 
     public double getmCurrentLat() {
@@ -85,6 +86,10 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
 
     public String getmCurrentAdress() {
         return mCurrentAdress;
+    }
+
+    public String getDistrictName() {
+        return districtName;
     }
 
     public SignageOrderInfoAdapter(Context context, List<SignageManagementBean.SignBoardBean.TemplateValuesBean> list, ImageAdapter imageAdapter) {
@@ -130,6 +135,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
             mCurrentLon = location.getLongitude();
             double mCurrentAccracy = location.getRadius();
             mCurrentAdress = location.getAddress().address;
+            districtName = location.getDistrict();
             locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360

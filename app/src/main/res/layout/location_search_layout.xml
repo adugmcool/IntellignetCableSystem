@@ -31,7 +31,7 @@
             android:inputType="text"
             android:textSize="16sp"
             android:background="@null"
-            android:textColor="@color/color_9B9B9B"
+            android:textColor="@color/white"
             android:textCursorDrawable="@null"
             android:imeOptions="actionDone"/>
 

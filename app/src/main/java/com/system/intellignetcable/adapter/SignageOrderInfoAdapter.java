@@ -17,17 +17,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.TextureMapView;
-import com.baidu.mapapi.model.LatLng;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.LatLng;
 import com.google.gson.Gson;
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.bean.SignageManagementBean;
@@ -48,7 +46,7 @@ import butterknife.ButterKnife;
  * Created by zydu on 2018/11/30.
  */
 
-public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
+public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements LocationSource, AMapLocationListener {
     private static final String TAG = "SignageOrderInfoAdapter";
     private static final int TEXT_TYPE = 0;
     private static final int DATE_TYPE = 1;
@@ -65,16 +63,21 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
     private int mDay;
     private ImageAdapter imageAdapter;
     //定位相关
-    private LocationClient mLocClient;
-    public MyLocationListenner myListener = new MyLocationListenner();
-    private boolean isFirstLoc = true; // 是否首次定位
-    private MyLocationData locData;
-    private BaiduMap mBaiduMap;
-    private TextureMapView mapView;
+    //初始化地图控制器对象
+    private AMap aMap;
+    //声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
+    private LatLng latLng;
+    //标识，用于判断是否只显示一次定位信息和用户重新定位
+    private boolean isFirstLoc = true;
+    //声明mListener对象，定位监听器
+    private OnLocationChangedListener mListener = null;
     private double mCurrentLat;
     private double mCurrentLon;
-    private String districtName;
     private String mCurrentAdress;
+    private MapView mapView;
 
     public double getmCurrentLat() {
         return mCurrentLat;
@@ -86,10 +89,6 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
 
     public String getmCurrentAdress() {
         return mCurrentAdress;
-    }
-
-    public String getDistrictName() {
-        return districtName;
     }
 
     public SignageOrderInfoAdapter(Context context, List<SignageManagementBean.SignBoardBean.TemplateValuesBean> list, ImageAdapter imageAdapter) {
@@ -105,54 +104,27 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
     }
 
     private void initMap() {
-        mBaiduMap = mapView.getMap();
-        // 开启定位图层
-        mBaiduMap.setMyLocationEnabled(true);
-        // 定位初始化
-        mLocClient = new LocationClient(context);
-        mLocClient.registerLocationListener(myListener);
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);
-        option.setOpenGps(true); // 打开gps
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
-        mLocClient.setLocOption(option);
-        mLocClient.start();
-    }
-
-    /**
-     * 定位SDK监听函数
-     */
-    public class MyLocationListenner implements BDLocationListener {
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            // map view 销毁后不在处理新接收的位置
-            if (location == null || mapView == null) {
-                return;
-            }
-            mCurrentLat = location.getLatitude();
-            mCurrentLon = location.getLongitude();
-            double mCurrentAccracy = location.getRadius();
-            mCurrentAdress = location.getAddress().address;
-            districtName = location.getDistrict();
-            locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            mBaiduMap.setMyLocationData(locData);
-            if (isFirstLoc) {
-                isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(18.0f);
-                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-            }
+        if (aMap == null) {
+            aMap = mapView.getMap();
         }
-
-        public void onReceivePoi(BDLocation poiLocation) {
+        //初始化定位
+        mLocationClient = new AMapLocationClient(context);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(this);
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+        mLocationOption.setOnceLocationLatest(true);
+        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
+        mLocationOption.setInterval(1000);
+        //关闭缓存机制
+        mLocationOption.setLocationCacheEnable(true);
+        if (null != mLocationClient) {
+            mLocationClient.setLocationOption(mLocationOption);
+            mLocationClient.startLocation();
         }
     }
 
@@ -211,7 +183,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
             if(list.get(position -1).getFieldName().equals("cableNumber")){
                 Log.i("onBindViewHolder", "position : " + position + " --- " + (new Gson().toJson(list)));
             }
-            final String fieldName = list.get(position - 1).getFieldDesc();
+            final String fieldName = list.get(position - 1).getFieldName();
             final String fieldValue = list.get(position -1).getFieldValue();
             ((TextHolder) holder).textEt.setTag(R.id.cable_id, position);
             ((TextHolder) holder).textNameTv.setText(fieldName + ":");
@@ -234,7 +206,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
                 public void afterTextChanged(Editable s) {
                     if(position == (int)((TextHolder) holder).textEt.getTag(R.id.cable_id)){
                         for (int i = 0; i < list.size(); i++) {
-                            String name = list.get(i).getFieldDesc();
+                            String name = list.get(i).getFieldName();
                             if(name.equals(fieldName)){
                                 list.get(i).setFieldValue(s.toString());
                                 break;
@@ -248,7 +220,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
             ((TextHolder) holder).textEt.addTextChangedListener(textWatcher);
             ((TextHolder) holder).textEt.setTag(textWatcher);
         } else if (holder instanceof DateHolder) {
-            ((DateHolder) holder).dateNameTv.setText(list.get(position -1).getFieldDesc() + ":");
+            ((DateHolder) holder).dateNameTv.setText(list.get(position -1).getFieldName() + ":");
             if (list.get(position -1).getFieldValue() != null) {
                 ((DateHolder) holder).dateTv.setText(toDate(list.get(position -1).getFieldValue()));
                 list.get(position -1).setFieldValue(toDate(list.get(position -1).getFieldValue()));
@@ -292,7 +264,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
                 }
             });
         } else if (holder instanceof ListHolder){
-            ((ListHolder) holder).listNameTv.setText(list.get(position -1).getFieldDesc() + ":");
+            ((ListHolder) holder).listNameTv.setText(list.get(position -1).getFieldName() + ":");
             if (list.get(position -1).getDicts() != null && list.get(position -1).getDicts().size() > 0) {
                 List<String> values = new ArrayList<>();
                 int selectItem = -1;
@@ -366,6 +338,45 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
         }
     }
 
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                //可在其中解析amapLocation获取相应内容。
+                double mCurrentLat = aMapLocation.getLatitude();
+                double mCurrentLon = aMapLocation.getLongitude();
+                latLng = new LatLng(mCurrentLat, mCurrentLon);//构造一个位置
+                // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
+                if (isFirstLoc) {
+                    //设置缩放级别
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+                    //将地图移动到定位点
+                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(mCurrentLat, mCurrentLon)));
+                    //点击定位按钮 能够将地图的中心移动到定位点
+                    mListener.onLocationChanged(aMapLocation);
+
+                    isFirstLoc = false;
+                }
+
+            } else {
+                //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError", "location Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+            }
+        }
+    }
+
+    @Override
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        mListener = onLocationChangedListener;
+    }
+
+    @Override
+    public void deactivate() {
+        mListener = null;
+    }
+
     class TextHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text_name_tv)
         TextView textNameTv;
@@ -424,7 +435,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter{
 
     class LocationHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.location_mv)
-        TextureMapView locationMv;
+        MapView locationMv;
 
         LocationHolder(View view) {
             super(view);

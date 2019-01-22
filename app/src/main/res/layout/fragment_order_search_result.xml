@@ -39,16 +39,16 @@
         app:srlAccentColor="#00000000"
         app:srlEnablePreviewInEditMode="true">
 
-    <ListView
-        android:id="@+id/search_result_lv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:listSelector="@color/transparent"
-        android:divider="@null"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="12dp"/>
+        <ListView
+            android:id="@+id/search_result_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:listSelector="@color/transparent"
+            android:divider="@color/transparent"
+            android:dividerHeight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

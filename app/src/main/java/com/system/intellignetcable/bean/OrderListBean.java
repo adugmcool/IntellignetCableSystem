@@ -98,7 +98,7 @@ public class OrderListBean implements Serializable {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable{
             /**
              * signsNum : 10
              * workAddress : 光华路
@@ -108,7 +108,15 @@ public class OrderListBean implements Serializable {
 
             private int signsNum;
             private String workAddress;
+            private int workUserId;
+            private String workUserName;
+            private int sendUserId;
+            private String sendUserName;
+            private String userTeamplateName;
+            private int userTeamplateId;
+            private String createDate;
             private int workOrderId;
+            private Object list;
             private int status;
 
             public int getSignsNum() {
@@ -127,12 +135,76 @@ public class OrderListBean implements Serializable {
                 this.workAddress = workAddress;
             }
 
+            public int getWorkUserId() {
+                return workUserId;
+            }
+
+            public void setWorkUserId(int workUserId) {
+                this.workUserId = workUserId;
+            }
+
+            public String getWorkUserName() {
+                return workUserName;
+            }
+
+            public void setWorkUserName(String workUserName) {
+                this.workUserName = workUserName;
+            }
+
+            public int getSendUserId() {
+                return sendUserId;
+            }
+
+            public void setSendUserId(int sendUserId) {
+                this.sendUserId = sendUserId;
+            }
+
+            public String getSendUserName() {
+                return sendUserName;
+            }
+
+            public void setSendUserName(String sendUserName) {
+                this.sendUserName = sendUserName;
+            }
+
+            public String getUserTeamplateName() {
+                return userTeamplateName;
+            }
+
+            public void setUserTeamplateName(String userTeamplateName) {
+                this.userTeamplateName = userTeamplateName;
+            }
+
+            public int getUserTeamplateId() {
+                return userTeamplateId;
+            }
+
+            public void setUserTeamplateId(int userTeamplateId) {
+                this.userTeamplateId = userTeamplateId;
+            }
+
+            public String getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(String createDate) {
+                this.createDate = createDate;
+            }
+
             public int getWorkOrderId() {
                 return workOrderId;
             }
 
             public void setWorkOrderId(int workOrderId) {
                 this.workOrderId = workOrderId;
+            }
+
+            public Object getList() {
+                return list;
+            }
+
+            public void setList(Object list) {
+                this.list = list;
             }
 
             public int getStatus() {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">智能电缆系统</string>
+    <string name="app_name">智能电缆管理系统</string>
     <string name="work_order">工单</string>
     <string name="location">地图</string>
     <string name="analyze">分析</string>

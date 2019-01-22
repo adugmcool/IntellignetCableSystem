@@ -23,6 +23,7 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.system.intellignetcable.R;
+import com.system.intellignetcable.adapter.NewOrderAdapter;
 import com.system.intellignetcable.adapter.OrderListAdapter;
 import com.system.intellignetcable.bean.OrderListBean;
 import com.system.intellignetcable.util.ParamUtil;
@@ -56,7 +57,8 @@ public class OrderStatusListActivity extends BaseActivity implements AdapterView
     private int pageIndex = 1;
     private int pageSize = 10;
     private Gson gson;
-    private OrderListAdapter orderListAdapter;
+    //    private OrderListAdapter orderListAdapter;
+    private NewOrderAdapter newOrderAdapter;
     private List<OrderListBean.PageBean.ListBean> listBeans;
     private int userId;
     private int type;
@@ -92,8 +94,9 @@ public class OrderStatusListActivity extends BaseActivity implements AdapterView
         userId = (int) SharedPreferencesUtil.get(this, ParamUtil.USER_ID, 0);
         type = (int) SharedPreferencesUtil.get(this, ParamUtil.TYPE, 2); // 1为管理员，2为普通用户
         getList(userId, type, String.valueOf(pageIndex), String.valueOf(pageSize), status);
-        orderListAdapter = new OrderListAdapter(this, listBeans);
-        orderList.setAdapter(orderListAdapter);
+//        orderListAdapter = new OrderListAdapter(this, listBeans);
+        newOrderAdapter = new NewOrderAdapter(this, listBeans);
+        orderList.setAdapter(newOrderAdapter);
     }
 
     private void setListener() {
@@ -109,9 +112,9 @@ public class OrderStatusListActivity extends BaseActivity implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(OrderStatusListActivity.this, OrderInfoDetailActivity.class);
-        intent.putExtra(ParamUtil.WORK_ORDER_ID, listBeans.get(position).getWorkOrderId());
-        startActivity(intent);
+//        Intent intent = new Intent(OrderStatusListActivity.this, OrderInfoDetailActivity.class);
+//        intent.putExtra(ParamUtil.WORK_ORDER_ID, listBeans.get(position).getWorkOrderId());
+//        startActivity(intent);
     }
 
     @Override
@@ -142,7 +145,7 @@ public class OrderStatusListActivity extends BaseActivity implements AdapterView
                             }else if (orderListBean.getPage().getList() != null && orderListBean.getPage().getList().size() > 0) {
                                 showDataSuc();
                                 listBeans.addAll(orderListBean.getPage().getList());
-                                orderListAdapter.notifyDataSetChanged();
+                                newOrderAdapter.notifyDataSetChanged();
                             }
                             if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() < 10) {
                                 refreshLayout.setEnableLoadMore(false);

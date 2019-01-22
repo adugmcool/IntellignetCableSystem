@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white">
 
-    <com.baidu.mapapi.map.TextureMapView
+    <com.amap.api.maps2d.MapView
         android:id="@+id/location_mv"
         android:layout_width="fill_parent"
         android:layout_height="230dp"

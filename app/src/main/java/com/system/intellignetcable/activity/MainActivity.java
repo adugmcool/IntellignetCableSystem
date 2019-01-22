@@ -12,6 +12,7 @@ import com.system.intellignetcable.R;
 import com.system.intellignetcable.fragment.AnalyzeFragment;
 import com.system.intellignetcable.fragment.LocationFragment;
 import com.system.intellignetcable.fragment.MineFragment;
+import com.system.intellignetcable.fragment.NewOrderFragment;
 import com.system.intellignetcable.fragment.OrderFragment;
 
 import butterknife.BindView;
@@ -32,7 +33,8 @@ public class MainActivity extends BaseActivity {
     RadioButton mineRb;
 
     private FragmentManager fragmentManager;
-    private OrderFragment orderFragment;
+//    private OrderFragment orderFragment;
+    private NewOrderFragment newOrderFragment;
     private LocationFragment locationFragment;
     private AnalyzeFragment analyzeFragment;
     private MineFragment mineFragment;
@@ -47,14 +49,14 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState != null){
             oldFragment = getSupportFragmentManager().getFragment(savedInstanceState, "Fragment");
         }else {
-            oldFragment = OrderFragment.getInstance();
+            oldFragment = NewOrderFragment.getInstance();
         }
         initData();
     }
 
     private void initData() {
         fragmentManager = getSupportFragmentManager();
-        orderFragment = OrderFragment.getInstance();
+        newOrderFragment = NewOrderFragment.getInstance();
         locationFragment = LocationFragment.getInstance();
         analyzeFragment = AnalyzeFragment.getInstance();
         mineFragment = MineFragment.getInstance();
@@ -65,7 +67,7 @@ public class MainActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.order_rb:
-                switchFragment(orderFragment).commitAllowingStateLoss();
+                switchFragment(newOrderFragment).commitAllowingStateLoss();
                 break;
             case R.id.location_rb:
                 switchFragment(locationFragment).commitAllowingStateLoss();

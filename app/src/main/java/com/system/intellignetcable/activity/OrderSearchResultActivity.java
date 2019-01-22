@@ -25,6 +25,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.adapter.AnalyzeAdapter;
+import com.system.intellignetcable.adapter.NewOrderAdapter;
 import com.system.intellignetcable.bean.OrderListBean;
 import com.system.intellignetcable.util.ParamUtil;
 import com.system.intellignetcable.util.SharedPreferencesUtil;
@@ -42,7 +43,7 @@ import butterknife.Unbinder;
  * Created by adu on 2018/11/30.
  */
 
-public class OrderSearchResultActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener, AdapterView.OnItemClickListener {
+public class OrderSearchResultActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener {
     private static final String TAG = "OrderSearchFragment";
     @BindView(R.id.hint_tv)
     TextView hintTv;
@@ -58,9 +59,10 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
     Unbinder unbinder;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
-    private AnalyzeAdapter analyzeAdapter;
-    private List<String> list;
-    private List<Integer> idList;
+    //    private AnalyzeAdapter analyzeAdapter;
+    private NewOrderAdapter newOrderAdapter;
+    private List<OrderListBean.PageBean.ListBean> list;
+    //    private List<Integer> idList;
     private int pageIndex = 1;
     private int pageSize = 10;
     private int userId;
@@ -85,11 +87,11 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
         type = (int) SharedPreferencesUtil.get(this, ParamUtil.TYPE, 2);
         userId = (int) SharedPreferencesUtil.get(this, ParamUtil.USER_ID, 0);
         list = new ArrayList<>();
-        idList = new ArrayList<>();
-        analyzeAdapter = new AnalyzeAdapter(this, list);
-        searchResultLv.setAdapter(analyzeAdapter);
+//        idList = new ArrayList<>();
+//        analyzeAdapter = new AnalyzeAdapter(this, list);
+        newOrderAdapter = new NewOrderAdapter(this, list);
+        searchResultLv.setAdapter(newOrderAdapter);
         getOrderList(userId, type, searchString, String.valueOf(pageIndex), String.valueOf(pageSize));
-        searchResultLv.setOnItemClickListener(this);
     }
 
     @OnClick(R.id.back_iv)
@@ -103,7 +105,6 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
         if (!searchEt.getText().toString().isEmpty()) {
             pageIndex = 1;
             list.clear();
-            idList.clear();
             searchString = searchEt.getText().toString();
             getOrderList(userId, type, searchString, String.valueOf(pageIndex), String.valueOf(pageSize));
         }
@@ -122,11 +123,8 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
                             if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() == 0){
                                 showNoData();
                             } else if (orderListBean.getPage().getList().size() > 0) {
-                                for (int i = 0; i < orderListBean.getPage().getList().size(); i++) {
-                                    list.add(orderListBean.getPage().getList().get(i).getWorkAddress());
-                                    idList.add(orderListBean.getPage().getList().get(i).getWorkOrderId());
-                                }
-                                analyzeAdapter.notifyDataSetChanged();
+                                list.addAll(orderListBean.getPage().getList());
+                                newOrderAdapter.notifyDataSetChanged();
                                 showDataSuc();
                             }
                             if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() < 10) {
@@ -160,16 +158,15 @@ public class OrderSearchResultActivity extends BaseActivity implements OnRefresh
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         list.clear();
-        idList.clear();
         pageIndex = 1;
         getOrderList(userId, type, searchString, String.valueOf(pageIndex), String.valueOf(pageSize));
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        hideSoftInput(view);
-        Intent intent = new Intent(OrderSearchResultActivity.this, OrderInfoDetailActivity.class);
-        intent.putExtra(ParamUtil.WORK_ORDER_ID, idList.get(position));
-        startActivity(intent);
-    }
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        hideSoftInput(view);
+//        Intent intent = new Intent(OrderSearchResultActivity.this, OrderInfoDetailActivity.class);
+//        intent.putExtra(ParamUtil.WORK_ORDER_ID, idList.get(position));
+//        startActivity(intent);
+//    }
 }

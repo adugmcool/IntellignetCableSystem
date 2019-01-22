@@ -1,9 +1,6 @@
 package com.system.intellignetcable.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,7 +25,6 @@ import com.jph.takephoto.model.TResult;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.lzy.okgo.request.PostRequest;
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.adapter.ImageAdapter;
 import com.system.intellignetcable.adapter.SignageOrderInfoAdapter;
@@ -40,7 +36,6 @@ import com.system.intellignetcable.util.UrlUtils;
 import com.system.intellignetcable.view.StringListPopupWindow;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -229,24 +224,20 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
         Log.i(TAG, "urlString----" + sb.substring(0, sb.length() - 1));
         saveOrUpdate(signageManagementBean.getSignBoard().getEpc(), signageManagementBean.getSignBoard().getUserId(),
                 signageManagementBean.getSignBoard().getWorkOrderId(), getImageUrls(),
-                String.valueOf(signageOrderInfoAdapter.getmCurrentLon()), String.valueOf(signageOrderInfoAdapter.getmCurrentLat()),signageOrderInfoAdapter.getDistrictName(),
+                String.valueOf(signageOrderInfoAdapter.getmCurrentLon()), String.valueOf(signageOrderInfoAdapter.getmCurrentLat()),
                 signageOrderInfoAdapter.getmCurrentAdress(), sb.substring(0, sb.length() - 1), picFiles);
     }
 
     //保存或修改epc
-    private void saveOrUpdate(String epc, int userId, int workOrderId, String imagesUrls, String longitude, String latitude, String districtName, String detailAddress, String ss, List<File> files) {
+    private void saveOrUpdate(String epc, int userId, int workOrderId, String imagesUrls, String longitude, String latitude, String detailAddress, String ss, List<File> files) {
         Log.i(TAG, "urlString------" + UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
                 + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&" + "detailAddress=" + detailAddress + "&" + ss);
-        PostRequest request = OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
-                + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&"+ "districtName=" + districtName + "&" + "detailAddress=" + detailAddress + "&" + ss)
+        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_SAVE_UPDATE + "?" + "epc=" + epc + "&" + "userId=" + userId + "&" + "workOrderId=" + workOrderId + "&"
+                + "imagesUrls=" + imagesUrls + "&" + "longitude=" + longitude + "&" + "latitude=" + latitude + "&" + "detailAddress=" + detailAddress + "&" + ss)
                 .tag(this)
-                .isMultipart(true);
-        if (!files.isEmpty()) {
-            request.addFileParams("picfiles", files);
-        } else {
-            request.params("avatar\"; filename=\"" + "1.png", drawableToFile(SignageManagementActivity.this, R.drawable.login_head, "1.png"));
-        }
-        request.headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
+                .isMultipart(true)
+                .addFileParams("picfiles", files)
+                .headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -266,41 +257,6 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }
                 });
-    }
-
-    /**
-     * drawable转为file
-     *
-     * @param mContext
-     * @param drawableId drawable的ID
-     * @param fileName   转换后的文件名
-     * @return
-     */
-    public File drawableToFile(Context mContext, int drawableId, String fileName) {
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), drawableId);
-        String defaultPath = mContext.getFilesDir()
-                .getAbsolutePath() + "/defaultGoodInfo";
-        File file = new File(defaultPath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        String defaultImgPath = defaultPath + "/" + fileName;
-        file = new File(defaultImgPath);
-        if(file.exists()){
-            return file;
-        }
-        try {
-            file.createNewFile();
-
-            FileOutputStream fOut = new FileOutputStream(file);
-
-            bitmap.compress(Bitmap.CompressFormat.PNG, 20, fOut);
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return file;
     }
 
     @OnClick(R.id.right_iv)

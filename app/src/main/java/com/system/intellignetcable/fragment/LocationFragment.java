@@ -397,7 +397,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
     }
 //
 //
-    private void searchList(String detailAddress) {
+    private void searchList(final String detailAddress) {
         OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_LIST+ "?detailAddress=" + detailAddress)
                 .tag(this)
                 .execute(new StringCallback() {
@@ -410,6 +410,10 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                                 searchLv.setVisibility(View.GONE);
                                 Toast.makeText(getActivity(), "没有搜到相关数据！", Toast.LENGTH_SHORT).show();
                             } else if (mapDataDetailBean.getList().size() > 0) {
+                                for (int i = 0; i < mapDataDetailBean.getList().size(); i++) {
+                                    MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(i);
+                                    listBean.setDetailAddress(detailAddress);
+                                }
                                 aMap.clear();
                                 MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(0);
                                 LatLng latLng = new LatLng(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));

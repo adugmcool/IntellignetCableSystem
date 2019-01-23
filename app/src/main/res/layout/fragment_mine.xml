@@ -140,10 +140,13 @@
             android:paddingLeft="16dp"
             android:text="@string/dispatch_list"
             android:textColor="@color/color_FF4A4A4A"
-            android:textSize="16dp" />
+            android:visibility="gone"
+            android:textSize="21dp" />
 
         <View
+            android:id="@+id/dispatch_line_view"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="1dp"
             android:background="@color/color_E6E6E6" />
 

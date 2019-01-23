@@ -186,14 +186,6 @@ public class OrderInfoDetailActivity extends BaseActivity {
         placeTv.setText(workOrderBean.getUserTeamplateName());
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            orderDetail(workOrderId);
-        }
-    }
-
     @OnClick(R.id.pass_btn)
     public void onPassBtnClicked() {
         Intent intent = new Intent(this, OrderStatusActivity.class);

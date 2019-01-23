@@ -145,7 +145,7 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
                                 templateValuesBeanList.addAll(signageManagementBean.getSignBoard().getTemplateValues());
                             }
                             String pathString = signageManagementBean.getSignBoard().getImagesUrls();
-                            if (!pathString.isEmpty()) {
+                            if (!TextUtils.isEmpty(pathString)) {
                                 String[] strings = pathString.split(",");
                                 for (String s : strings) {
                                     imageFromServeList.add(s);
@@ -171,7 +171,7 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
     }
 
     private void signageManagementDetail(String epc) {
-        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_DETAIL)
+        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.SIGNBOARDDETAIL)
                 .tag(this)
                 .headers("token", (String) SharedPreferencesUtil.get(this, ParamUtil.TOKEN, ""))
                 .params("epc", epc)
@@ -186,7 +186,7 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
                                 templateValuesBeanList.addAll(signageManagementBean.getSignBoard().getTemplateValues());
                             }
                             String pathString = signageManagementBean.getSignBoard().getImagesUrls();
-                            if (!pathString.isEmpty()) {
+                            if (!TextUtils.isEmpty(pathString)) {
                                 String[] strings = pathString.split(",");
                                 for (String s : strings) {
                                     imageFromServeList.add(s);

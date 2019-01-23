@@ -183,7 +183,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
             if(list.get(position -1).getFieldName().equals("cableNumber")){
                 Log.i("onBindViewHolder", "position : " + position + " --- " + (new Gson().toJson(list)));
             }
-            final String fieldName = list.get(position - 1).getFieldName();
+            final String fieldName = list.get(position - 1).getFieldDesc();
             final String fieldValue = list.get(position -1).getFieldValue();
             ((TextHolder) holder).textEt.setTag(R.id.cable_id, position);
             ((TextHolder) holder).textNameTv.setText(fieldName + ":");

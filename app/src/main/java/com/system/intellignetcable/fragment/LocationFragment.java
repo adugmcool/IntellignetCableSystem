@@ -3,6 +3,8 @@ package com.system.intellignetcable.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -38,14 +40,10 @@ import com.lzy.okgo.model.Response;
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.activity.EpcListActivity;
 import com.system.intellignetcable.activity.MainActivity;
-import com.system.intellignetcable.activity.OrderInfoDetailActivity;
-import com.system.intellignetcable.adapter.EpcListAdapter;
 import com.system.intellignetcable.adapter.StringListAdapter;
-import com.system.intellignetcable.bean.EpcBean;
 import com.system.intellignetcable.bean.LocationSearchBean;
 import com.system.intellignetcable.bean.MapDataBean;
 import com.system.intellignetcable.bean.MapDataDetailBean;
-import com.system.intellignetcable.bean.OrderListBean;
 import com.system.intellignetcable.util.ParamUtil;
 import com.system.intellignetcable.util.SharedPreferencesUtil;
 import com.system.intellignetcable.util.UrlUtils;
@@ -101,6 +99,12 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
         this.mainActivity = (MainActivity) activity;
     }
 
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            findMapDataStat();
+        }
+    };
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -110,12 +114,13 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         locationMv.onCreate(savedInstanceState);
         initMap();
+
         findMapDataStat();
+
         searchIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = searchEt.getText().toString();
-                findByDetailAddress(content);
+
             }
         });
         searchEt.addTextChangedListener(new TextWatcher() {
@@ -131,11 +136,14 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() == 0){
+                if (s.length() == 0) {
                     findMapDataStat();
+                } else {
+                    findByDetailAddress(s.toString());
                 }
             }
         });
+        mHandler.sendEmptyMessageDelayed(1, 5000);
         return view;
     }
 
@@ -234,7 +242,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                         Gson gson = new Gson();
                         MapDataBean mapDataBean = gson.fromJson(response.body(), MapDataBean.class);
                         if (mapDataBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            aMap.clear();
+//                            aMap.clear();
                             List<MapDataBean.ListBean> listBeans = mapDataBean.getList();
 
                             if (listBeans != null && !listBeans.isEmpty()) {
@@ -255,12 +263,12 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                                     //将View转化为Bitmap
                                     BitmapDescriptor descriptor = BitmapDescriptorFactory.fromView(view);
                                     MarkerOptions options = new MarkerOptions().position(latLng).icon(descriptor).zIndex(9).draggable(false);
-                                    Marker marker =aMap.addMarker(options);
+                                    Marker marker = aMap.addMarker(options);
                                     marker.setObject(listBean);
                                     aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
                                         @Override
                                         public boolean onMarkerClick(Marker marker) {
-                                            MapDataBean.ListBean listBean = ( MapDataBean.ListBean) marker.getObject();
+                                            MapDataBean.ListBean listBean = (MapDataBean.ListBean) marker.getObject();
                                             findMapEPCDataStat(listBean.getAreaId() + "", listBean.getAreaName());
                                             return false;
                                         }
@@ -284,6 +292,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
         super.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         if (locationMv != null) {
+            aMap = null;
             locationMv.onDestroy();
         }
         if (mLocationClient != null) {
@@ -315,7 +324,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
-        locationMv.onSaveInstanceState(outState);
+//        locationMv.onSaveInstanceState(outState);
     }
 
 
@@ -329,7 +338,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                         Gson gson = new Gson();
                         final MapDataDetailBean mapDataDetailBean = gson.fromJson(response.body(), MapDataDetailBean.class);
                         if (mapDataDetailBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            List<MapDataDetailBean.ListBean> listBeanList =  mapDataDetailBean.getList();
+                            List<MapDataDetailBean.ListBean> listBeanList = mapDataDetailBean.getList();
                             for (int i = 0; i < listBeanList.size(); i++) {
                                 listBeanList.get(i).setDetailAddress(name);
                             }
@@ -364,7 +373,6 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                         if (locationSearchBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
                             if (locationSearchBean.getList() == null || locationSearchBean.getList().size() == 0) {
                                 searchLv.setVisibility(View.GONE);
-                                Toast.makeText(getActivity(), "没有搜到相关数据！", Toast.LENGTH_SHORT).show();
                             } else if (locationSearchBean.getList().size() > 0) {
                                 final List<String> strings = new ArrayList<>();
                                 searchLv.setVisibility(View.VISIBLE);
@@ -395,10 +403,11 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                     }
                 });
     }
-//
+
+    //
 //
     private void searchList(final String detailAddress) {
-        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_LIST+ "?detailAddress=" + detailAddress)
+        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SIGN_BOARD_LIST + "?detailAddress=" + detailAddress)
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -414,7 +423,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                                     MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(i);
                                     listBean.setDetailAddress(detailAddress);
                                 }
-                                aMap.clear();
+//                                aMap.clear();
                                 MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(0);
                                 LatLng latLng = new LatLng(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));
                                 Bundle bundle = new Bundle();

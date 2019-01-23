@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,6 +66,8 @@ public class MineFragment extends BaseFragment {
     TextView reviewedTv;
     @BindView(R.id.rejected_tv)
     TextView rejectedTv;
+    @BindView(R.id.dispatch_line_view)
+    View dispatchLineView;
     private MainActivity mainActivity;
     private Gson gson;
 
@@ -138,6 +139,13 @@ public class MineFragment extends BaseFragment {
                                 Glide.with(mainActivity).load(loginBean.getUser().getHeadImages()).into(headPhoto);
                             }
                             nicknameTv.setText(loginBean.getUser().getUserName());
+                            if(loginBean.getUser().getType() == 1){
+                                dispatchListTv.setVisibility(View.VISIBLE);
+                                dispatchLineView.setVisibility(View.VISIBLE);
+                            }else{
+                                dispatchListTv.setVisibility(View.GONE);
+                                dispatchLineView.setVisibility(View.GONE);
+                            }
                         } else {
                             Toast.makeText(getActivity(), loginBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
@@ -179,7 +187,7 @@ public class MineFragment extends BaseFragment {
     }
 
     //查询APP最新版本
-    private void getAppVersion(){
+    private void getAppVersion() {
         OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_SYS_APP_VERSION)
                 .tag(this)
                 .headers("token", (String) SharedPreferencesUtil.get(getActivity(), ParamUtil.TOKEN, ""))
@@ -189,7 +197,7 @@ public class MineFragment extends BaseFragment {
                     public void onSuccess(Response<String> response) {
                         AppVersionBean appVersionBean = gson.fromJson(response.body(), AppVersionBean.class);
                         if (appVersionBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            if (appVersionBean.getObj().getAppVersion() != null && !appVersionBean.getObj().getAppVersion().equals("V" + AppUtils.getVersionName(getActivity()))){
+                            if (appVersionBean.getObj().getAppVersion() != null && !appVersionBean.getObj().getAppVersion().equals("V" + AppUtils.getVersionName(getActivity()))) {
                                 showUpdateDialog(appVersionBean.getObj().getAppUrl());
                             }
                         } else {
@@ -221,25 +229,23 @@ public class MineFragment extends BaseFragment {
     }
 
     //进入工单状态列表界面
-    private void startStatusListActivity(int type){
+    private void startStatusListActivity(int type) {
         Intent intent = new Intent(mainActivity, OrderStatusListActivity.class);
         intent.putExtra(ParamUtil.ORDER_STATUS, type);
         startActivity(intent);
     }
 
     //弹出是否升级提示框
-    private void showUpdateDialog(final String appUrl){
+    private void showUpdateDialog(final String appUrl) {
         //创建AlertDialog的构造器的对象
-        AlertDialog.Builder builder=new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
         //构造器内容,为对话框设置文本项(之后还有列表项的例子)
         builder.setMessage("是否升级？");
         //为构造器设置确定按钮,第一个参数为按钮显示的文本信息，第二个参数为点击后的监听事件，用匿名内部类实现
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
-        {
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Intent intent= new Intent();
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 Uri content_url = Uri.parse(appUrl);
                 intent.setData(content_url);

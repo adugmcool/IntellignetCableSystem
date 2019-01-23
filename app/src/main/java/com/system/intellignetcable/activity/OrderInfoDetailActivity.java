@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,10 +17,15 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.system.intellignetcable.R;
+import com.system.intellignetcable.bean.MapDataDetailBean;
 import com.system.intellignetcable.bean.OrderInfoDetailBean;
 import com.system.intellignetcable.util.ParamUtil;
 import com.system.intellignetcable.util.SharedPreferencesUtil;
 import com.system.intellignetcable.util.UrlUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +41,10 @@ public class OrderInfoDetailActivity extends BaseActivity {
     LinearLayout contentLl;
     @BindView(R.id.hint_tv)
     TextView hintTv;
+    @BindView(R.id.epcs_llayout)
+    LinearLayout epcsLlayout;
+    @BindView(R.id.line_view)
+    View lineView;
 
     private int workOrderId;
     @BindView(R.id.detail_ll)
@@ -95,11 +105,39 @@ public class OrderInfoDetailActivity extends BaseActivity {
                     public void onSuccess(Response<String> response) {
                         OrderInfoDetailBean orderInfoDetailBean = gson.fromJson(response.body(), OrderInfoDetailBean.class);
                         if (orderInfoDetailBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            if (orderInfoDetailBean.getWorkOrder() == null){
+                            if (orderInfoDetailBean.getWorkOrder() == null) {
                                 showNoData();
-                            }else {
+                            } else {
                                 showDataSuc();
                                 updateData(orderInfoDetailBean.getWorkOrder());
+
+                                List<String> epcs = orderInfoDetailBean.getWorkOrder().getList();
+                                if (epcs != null && !epcs.isEmpty()) {
+                                    lineView.setVisibility(View.VISIBLE);
+                                    for (int i = 0; i < epcs.size(); i++) {
+                                        final String epcId = epcs.get(i);
+                                        View view = LayoutInflater.from(OrderInfoDetailActivity.this).inflate(R.layout.item_epc, null);
+                                        TextView indexTv = view.findViewById(R.id.index_tv);
+                                        TextView epcTv = view.findViewById(R.id.epc_tv);
+                                        TextView addressTv = view.findViewById(R.id.address_tv);
+                                        indexTv.setText((i + 1) + "");
+                                        epcTv.setText(epcId);
+                                        addressTv.setText("地址: " + orderInfoDetailBean.getWorkOrder().getWorkAddress());
+                                        view.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = new Intent(OrderInfoDetailActivity.this, SignageManagementActivity.class);
+                                                intent.putExtra("epcId", epcId);
+                                                startActivity(intent);
+                                            }
+                                        });
+                                        epcsLlayout.addView(view);
+                                    }
+
+                                } else {
+                                    lineView.setVisibility(View.GONE);
+                                }
+
                             }
                         } else {
                             showFail();

@@ -1,6 +1,7 @@
 package com.system.intellignetcable.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by adu on 2018/11/28.
@@ -8,9 +9,10 @@ import java.io.Serializable;
 
 public class OrderInfoDetailBean implements Serializable {
 
+
     /**
      * msg : success
-     * workOrder : {"signsNum":10,"workAddress":"光华路","workUserId":4,"workUserName":"测试普通用户","sendUserId":3,"sendUserName":"测试管理员","userTeamplateName":"建国路","userTeamplateId":3,"createDate":"2018-11-27 02:31:11","workOrderId":1,"status":0}
+     * workOrder : {"signsNum":3,"workAddress":"北燕路","workUserId":4,"workUserName":"测试普通用户","sendUserId":3,"sendUserName":"测试管理员","userTeamplateName":"全部字段","userTeamplateId":1,"createDate":"2018-11-28 06:24:25","workOrderId":6,"list":["A11801001001180800000A10","A11801001001180800000A11","A11801001001180800000A12"],"status":3}
      * code : 0
      */
 
@@ -42,19 +44,20 @@ public class OrderInfoDetailBean implements Serializable {
         this.code = code;
     }
 
-    public static class WorkOrderBean {
+    public static class WorkOrderBean implements Serializable{
         /**
-         * signsNum : 10
-         * workAddress : 光华路
+         * signsNum : 3
+         * workAddress : 北燕路
          * workUserId : 4
          * workUserName : 测试普通用户
          * sendUserId : 3
          * sendUserName : 测试管理员
-         * userTeamplateName : 建国路
-         * userTeamplateId : 3
-         * createDate : 2018-11-27 02:31:11
-         * workOrderId : 1
-         * status : 0
+         * userTeamplateName : 全部字段
+         * userTeamplateId : 1
+         * createDate : 2018-11-28 06:24:25
+         * workOrderId : 6
+         * list : ["A11801001001180800000A10","A11801001001180800000A11","A11801001001180800000A12"]
+         * status : 3
          */
 
         private int signsNum;
@@ -68,6 +71,7 @@ public class OrderInfoDetailBean implements Serializable {
         private String createDate;
         private int workOrderId;
         private int status;
+        private List<String> list;
 
         public int getSignsNum() {
             return signsNum;
@@ -155,6 +159,14 @@ public class OrderInfoDetailBean implements Serializable {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public List<String> getList() {
+            return list;
+        }
+
+        public void setList(List<String> list) {
+            this.list = list;
         }
     }
 }

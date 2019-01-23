@@ -19,7 +19,7 @@
         <RelativeLayout
             android:id="@+id/signs_number_rl"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="56dp"
             android:layout_marginTop="10dp"
             android:background="@color/white"
             android:orientation="vertical">
@@ -49,7 +49,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="30dp"
                     android:background="@null"
-                    android:fontFamily="@font/notosanshans_regular"
                     android:gravity="center_vertical"
                     android:hint="@string/please_input_signs_number"
                     android:imeOptions="actionNext"
@@ -59,7 +58,7 @@
                     android:textColor="@color/color_FF4A4A4A"
                     android:textColorHint="@color/color_9B9B9B"
                     android:textCursorDrawable="@null"
-                    android:textSize="16sp" />
+                    android:textSize="21sp" />
 
             </LinearLayout>
 
@@ -74,7 +73,7 @@
         <RelativeLayout
             android:id="@+id/place_rl"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="56dp"
             android:layout_below="@id/signs_number_rl"
             android:layout_marginTop="10dp"
             android:background="@color/white"
@@ -105,7 +104,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="30dp"
                     android:background="@null"
-                    android:fontFamily="@font/notosanshans_regular"
                     android:gravity="center_vertical"
                     android:hint="@string/please_input_place_sheet"
                     android:imeOptions="actionDone"
@@ -114,7 +112,7 @@
                     android:textColor="@color/color_FF4A4A4A"
                     android:textColorHint="@color/color_9B9B9B"
                     android:textCursorDrawable="@null"
-                    android:textSize="16sp" />
+                    android:textSize="21sp" />
 
             </LinearLayout>
 
@@ -157,7 +155,7 @@
         android:layout_below="@id/title_bar"
         android:gravity="center"
         android:textColor="@color/color_FF4A4A4A"
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:visibility="gone" />
 
 

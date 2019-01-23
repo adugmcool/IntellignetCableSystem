@@ -87,9 +87,9 @@
 
                     <TextView
                         android:id="@+id/fault_tv"
-                        style="@style/mine_text_size_color"
+                        style="@style/mine_text_size_color1"
                         android:layout_height="36dp"
-                        android:text="2017年10月出现一次故障"
+                        android:text="2017-10出现一次故障"
                         android:textColor="@color/color_757575" />
 
                     <TextView

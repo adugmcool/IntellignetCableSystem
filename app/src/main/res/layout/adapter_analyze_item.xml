@@ -7,8 +7,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:minHeight="52dp"
+        android:layout_height="58dp"
+        android:minHeight="58dp"
         android:paddingLeft="20dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_analyze_result_bg">
@@ -27,7 +27,7 @@
         android:gravity="center_vertical"
         android:layout_marginLeft="6dp"
         android:text="东三环中路9号"
-        android:textSize="16sp"
+        android:textSize="21sp"
         android:textColor="@color/color_FF4D4D4D"/>
 
     </LinearLayout>

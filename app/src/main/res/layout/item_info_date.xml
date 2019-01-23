@@ -10,9 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textSize="16sp"
+        android:textSize="21sp"
         android:textColor="@color/color_757575"
-        android:fontFamily="@font/notosanshans_regular"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="28dp"/>
 
@@ -22,9 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textSize="16sp"
+        android:textSize="21sp"
         android:textColor="@color/color_FF4A4A4A"
-        android:fontFamily="@font/notosanshans_regular"
         android:layout_marginRight="15dp"
         android:paddingTop="6dp"
         android:paddingBottom="6dp"/>

@@ -13,24 +13,29 @@
     <style name="mine_text_size_color">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">21sp</item>
         <item name="android:textColor">@color/color_FF4A4A4A</item>
         <item name="android:gravity">center</item>
-        <item name="android:fontFamily">@font/notosanshans_regular</item>
+    </style>
+
+    <style name="mine_text_size_color1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/color_FF4A4A4A</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="bottom_button">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:layout_height">51dp</item>
+        <item name="android:textSize">21sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginRight">8dp</item>
-        <item name="android:fontFamily">@font/notosanshans_regular</item>
     </style>
 
     <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">20sp</item>
-        <item name="android:fontFamily">@font/notosanshans_regular</item>
     </style>
 </resources>

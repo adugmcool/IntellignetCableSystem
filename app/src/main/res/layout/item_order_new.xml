@@ -9,11 +9,10 @@
     <TextView
         android:id="@+id/status_tv"
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:fontFamily="@font/notosanshans_regular"
+        android:layout_height="45dp"
         android:gravity="center"
         android:textColor="@color/color_757575"
-        android:textSize="16sp" />
+        android:textSize="21sp" />
 
     <View
         android:layout_width="match_parent"
@@ -25,8 +24,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="15dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingTop="10dp">
 
         <LinearLayout
@@ -36,22 +35,22 @@
 
             <TextView
                 style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                android:layout_height="42dp"
                 android:text="@string/number_signs" />
 
             <TextView
                 style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                android:layout_height="42dp"
                 android:text="@string/dispatch_time" />
 
             <TextView
                 style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                android:layout_height="42dp"
                 android:text="@string/dispatch_name" />
 
             <TextView
                 style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                android:layout_height="42dp"
                 android:text="@string/place" />
 
         </LinearLayout>
@@ -60,30 +59,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="22dp">
+            android:layout_marginLeft="10dp">
 
             <TextView
                 android:id="@+id/number_tv"
                 style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                android:layout_height="42dp"
                 android:textColor="@color/color_757575"/>
 
             <TextView
                 android:id="@+id/time_tv"
-                style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                style="@style/mine_text_size_color1"
+                android:layout_height="42dp"
                 android:textColor="@color/color_757575"/>
 
             <TextView
                 android:id="@+id/name_tv"
                 style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                android:layout_height="42dp"
                 android:textColor="@color/color_757575" />
 
             <TextView
                 android:id="@+id/place_tv"
                 style="@style/mine_text_size_color"
-                android:layout_height="36dp"
+                android:layout_height="42dp"
                 android:textColor="@color/color_757575"/>
 
         </LinearLayout>

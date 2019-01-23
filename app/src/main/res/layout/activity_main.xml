@@ -15,7 +15,7 @@
     <RadioGroup
         android:id="@+id/bottom_rg"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="53dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_bottom_bg"
         android:gravity="center_vertical"
@@ -33,7 +33,7 @@
             android:gravity="center"
             android:text="@string/work_order"
             android:textColor="@color/bottom_btn_tv_color"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:checked="true"/>
 
         <RadioButton
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:text="@string/location"
             android:textColor="@color/bottom_btn_tv_color"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/analyze_rb"
@@ -60,7 +60,7 @@
             android:gravity="center"
             android:text="@string/analyze"
             android:textColor="@color/bottom_btn_tv_color"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/mine_rb"
@@ -73,7 +73,7 @@
             android:gravity="center"
             android:text="@string/mine"
             android:textColor="@color/bottom_btn_tv_color"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
 
     </RadioGroup>
 

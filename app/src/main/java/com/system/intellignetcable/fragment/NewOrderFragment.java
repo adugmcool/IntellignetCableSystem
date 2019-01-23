@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,9 +35,9 @@ import com.system.intellignetcable.R;
 import com.system.intellignetcable.activity.DispatchSheetActivity;
 import com.system.intellignetcable.activity.MainActivity;
 import com.system.intellignetcable.activity.OrderInfoDetailActivity;
-import com.system.intellignetcable.activity.OrderSearchResultActivity;
 import com.system.intellignetcable.activity.ScanActivity;
 import com.system.intellignetcable.adapter.NewOrderAdapter;
+import com.system.intellignetcable.adapter.StringListAdapter;
 import com.system.intellignetcable.bean.OrderListBean;
 import com.system.intellignetcable.util.ParamUtil;
 import com.system.intellignetcable.util.SharedPreferencesUtil;
@@ -71,6 +73,8 @@ public class NewOrderFragment extends BaseFragment implements AdapterView.OnItem
     private static NewOrderFragment newOrderFragment;
     @BindView(R.id.fab)
     Button fab;
+    @BindView(R.id.search_lv)
+    ListView searchLv;
     private MainActivity mainActivity;
     private int type;
     private int pageIndex = 1;
@@ -79,6 +83,7 @@ public class NewOrderFragment extends BaseFragment implements AdapterView.OnItem
     private List<OrderListBean.PageBean.ListBean> list;
     private int userId;
     private NewOrderAdapter newOrderAdapter;
+    private StringListAdapter adapter;
 
     public static NewOrderFragment getInstance() {
         if (newOrderFragment == null) {
@@ -129,6 +134,27 @@ public class NewOrderFragment extends BaseFragment implements AdapterView.OnItem
         orderList.setOnItemClickListener(this);
         refreshLayout.setOnLoadMoreListener(this);
         refreshLayout.setOnRefreshListener(this);
+        searchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s == null || s.length() == 0) {
+                    mainActivity.hideSoftInput(searchEt);
+                    searchLv.setVisibility(View.GONE);
+                    return;
+                }
+                searchList(userId, type, s.toString(), "1", "10");
+            }
+        });
     }
 
     @Override
@@ -139,12 +165,12 @@ public class NewOrderFragment extends BaseFragment implements AdapterView.OnItem
 
     @OnClick(R.id.search_iv)
     public void onSearchIvClicked() {
-        if (!searchEt.getText().toString().isEmpty()) {
-            Intent intent = new Intent(mainActivity, OrderSearchResultActivity.class);
-            intent.putExtra(ParamUtil.SEARCH_CONTENT, searchEt.getText().toString());
-            startActivity(intent);
-            searchEt.setText("");
-        }
+//        if (!searchEt.getText().toString().isEmpty()) {
+//            Intent intent = new Intent(mainActivity, OrderSearchResultActivity.class);
+//            intent.putExtra(ParamUtil.SEARCH_CONTENT, searchEt.getText().toString());
+//            startActivity(intent);
+//            searchEt.setText("");
+//        }
     }
 
     @OnClick(R.id.dispatch_sheet_rl)
@@ -185,6 +211,50 @@ public class NewOrderFragment extends BaseFragment implements AdapterView.OnItem
                         showFail();
                         refreshLayout.finishLoadMore();
                         refreshLayout.finishRefresh();
+                        Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
+                    }
+                });
+    }
+
+    private void searchList(int userId, int type, String workAddress, String pageNo, String pageSize) {
+        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_LIST + "?userId=" + userId + "&type=" + type + "&workAddress=" + workAddress + "&pageNo=" + pageNo + "&pageSize=" + pageSize)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        final OrderListBean orderListBean = gson.fromJson(response.body(), OrderListBean.class);
+                        if (orderListBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
+                            if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() == 0) {
+                                searchLv.setVisibility(View.GONE);
+                                Toast.makeText(getActivity(), "没有搜到相关数据！", Toast.LENGTH_SHORT).show();
+                            } else if (orderListBean.getPage().getList().size() > 0) {
+                                List<String> strings = new ArrayList<>();
+                                searchLv.setVisibility(View.VISIBLE);
+                                for (int i = 0; i < orderListBean.getPage().getList().size(); i++) {
+                                    strings.add(orderListBean.getPage().getList().get(i).getWorkAddress());
+                                }
+                                adapter = new StringListAdapter(getActivity(), strings);
+                                searchLv.setAdapter(adapter);
+                                searchLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        mainActivity.hideSoftInput(view);
+                                        Intent intent = new Intent(mainActivity, OrderInfoDetailActivity.class);
+                                        intent.putExtra(ParamUtil.WORK_ORDER_ID, orderListBean.getPage().getList().get(position).getWorkOrderId());
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
+                        } else {
+                            showFail();
+                            Toast.makeText(getActivity(), orderListBean.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        showFail();
                         Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "请求错误：" + response.code() + "-------" + response.message());
                     }

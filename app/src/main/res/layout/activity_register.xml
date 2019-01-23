@@ -36,7 +36,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="16sp"
+                android:textSize="21sp"
                 android:textColor="@color/color_FF4A4A4A"
                 android:imeOptions="actionNext"
                 android:inputType="phone"
@@ -67,7 +67,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="16sp"
+                android:textSize="21sp"
                 android:inputType="numberPassword"
                 android:textColor="@color/color_FF4A4A4A"
                 android:textCursorDrawable="@null"
@@ -79,13 +79,13 @@
         <Button
             android:id="@+id/register_btn"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="46dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/shape_analyze_btn"
             android:text="@string/register"
-            android:textSize="16sp"
+            android:textSize="21sp"
             android:textColor="@color/white"
-            android:fontFamily="@font/notosanshans_regular"/>
+            />
 
     </LinearLayout>
 

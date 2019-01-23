@@ -47,7 +47,7 @@
                 android:paddingLeft="17dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="16sp"
+                android:textSize="21sp"
                 android:hint="@string/login_name"
                 android:textColor="@color/color_FF4A4A4A"
                 android:textColorHint="@color/color_4D000000"
@@ -88,7 +88,7 @@
                 android:paddingLeft="17dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="16sp"
+                android:textSize="21sp"
                 android:hint="@string/login_password"
                 android:textColorHint="@color/color_4D000000"
                 android:textColor="@color/color_FF4A4A4A"
@@ -119,13 +119,13 @@
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="46dp"
             android:layout_marginTop="25dp"
             android:background="@drawable/shape_analyze_btn"
             android:text="@string/login"
-            android:textSize="16sp"
+            android:textSize="21sp"
             android:textColor="@color/white"
-            android:fontFamily="@font/notosanshans_regular"/>
+          />
 
         <TextView
             android:id="@+id/register_tv"

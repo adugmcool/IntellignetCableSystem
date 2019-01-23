@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -71,10 +72,15 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
     private SimpleDateFormat simpleDateFormat;
     private TakePhoto takePhoto;
     private List<File> picFiles;
+    private String epcId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        epcId = getIntent().getStringExtra("epcId");
+        if(TextUtils.isEmpty(epcId)){
+            epcId = "A11801001001180800000A01";
+        }
         setContentView(R.layout.fragment_order_mangement_detail);
         ButterKnife.bind(this);
         initData();
@@ -107,9 +113,9 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
         recyclerView.addItemDecoration(new DividerItemDecoration(this, OrientationHelper.HORIZONTAL));
 
         if (((int) SharedPreferencesUtil.get(SignageManagementActivity.this, ParamUtil.TYPE, 2)) == 1) {
-            signageManagementDetail("A11801001001180800000A01");
+            signageManagementDetail(epcId);
         } else {
-            signageManagementScan("A11801001001180800000A01");
+            signageManagementScan(epcId);
         }
 
         CompressConfig compressConfig = new CompressConfig.Builder().setMaxSize(200 * 1024).setMaxPixel(800).create();

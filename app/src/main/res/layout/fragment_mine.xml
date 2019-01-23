@@ -33,10 +33,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="18dp"
                 android:gravity="center"
-                android:fontFamily="@font/notosanshans_regular"
                 android:text="sssss"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="21sp" />
 
         </RelativeLayout>
 
@@ -137,7 +136,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
-            android:fontFamily="@font/notosanshans_regular"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:text="@string/dispatch_list"

@@ -69,6 +69,10 @@
         <activity android:name=".activity.OrderStatusListActivity"
             android:launchMode="singleTask"/>
 
+        <activity android:name=".activity.EpcListActivity"
+            android:launchMode="singleTask"/>
+
+
         <activity android:name=".activity.OrderSearchResultActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden"/>

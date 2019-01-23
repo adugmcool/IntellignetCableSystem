@@ -29,7 +29,7 @@
     <RelativeLayout
         android:id="@+id/dispatch_sheet_rl"
         android:layout_width="130dp"
-        android:layout_height="52dp"
+        android:layout_height="58dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="8dp"
@@ -56,9 +56,9 @@
             android:layout_gravity="center_vertical"
             android:text="@string/dispatch_sheet"
             android:layout_marginLeft="15dp"
-            android:textSize="16sp"
+            android:textSize="21sp"
             android:textColor="@color/white"
-            android:fontFamily="@font/notosanshans_regular"/>
+          />
 
         </LinearLayout>
 
@@ -68,7 +68,7 @@
         android:id="@+id/hint_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:textColor="@color/color_FF4A4A4A"
         android:gravity="center"
         android:visibility="gone"/>

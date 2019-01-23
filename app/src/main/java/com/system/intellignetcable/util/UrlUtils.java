@@ -39,4 +39,9 @@ public class UrlUtils {
     public static final String METHOD_POST_SYS_MAP_DATA= "sys/findMapDataStat";
     // 系统管理-获取最新版本
     public static final String METHOD_POST_SYS_APP_VERSION= "sys/getLastAppVersion";
+    public static final String FINDBYDETAILADDRESS= "sign-board/findByDetailAddress";
+
+    public static final String METHOD_POST_SIGN_BOARD_LIST= "sign-board/list";
+    public static final String FINDMAPEPCDATASTAT= "sys/findMapEPCDataStat";
+
 }

@@ -11,11 +11,23 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
-    <include layout="@layout/location_search_layout"
+    <include
+        android:id="@+id/search_rl"
+        layout="@layout/location_search_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="46dp"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"/>
+
+    <ListView
+        android:id="@+id/search_lv"
+        android:layout_below="@id/search_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:visibility="gone"/>
 
 </RelativeLayout>

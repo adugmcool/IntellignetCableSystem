@@ -34,7 +34,7 @@
         android:id="@+id/hint_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="20sp"
+        android:textSize="26sp"
         android:textColor="@color/color_FF4A4A4A"
         android:gravity="center"
         android:visibility="gone"/>

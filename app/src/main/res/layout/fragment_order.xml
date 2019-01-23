@@ -27,7 +27,7 @@
             android:id="@+id/scan_rl"
             android:minWidth="96dp"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="46dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
@@ -49,7 +49,7 @@
                     android:layout_centerVertical="true"
                     android:text="@string/scan"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="21sp" />
 
 
         </RelativeLayout>

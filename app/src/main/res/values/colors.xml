@@ -34,4 +34,5 @@
     <color name="gray_4">#333333</color>
     <color name="color_F200CFDA">#F200CFDA</color>
     <color name="color_F200C5CE">#F200C5CE</color>
+    <color name="multiple_image_select_primaryDark">#FF1989FA</color>
 </resources>

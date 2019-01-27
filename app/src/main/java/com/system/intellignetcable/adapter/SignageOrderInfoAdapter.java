@@ -206,7 +206,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
                 public void afterTextChanged(Editable s) {
                     if(position == (int)((TextHolder) holder).textEt.getTag(R.id.cable_id)){
                         for (int i = 0; i < list.size(); i++) {
-                            String name = list.get(i).getFieldName();
+                            String name = list.get(i).getFieldDesc();
                             if(name.equals(fieldName)){
                                 list.get(i).setFieldValue(s.toString());
                                 break;
@@ -214,13 +214,13 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
                         }
                     }
 //                    list.get(position -1).setFieldValue(s.toString());
-//                    Log.i(TAG, list.get(position -1).getFieldName() + "-----" + list.get(position -1).getFieldValue());
+//                    Log.i(TAG, list.get(position -1).getFieldDesc() + "-----" + list.get(position -1).getFieldValue());
                 }
             };
             ((TextHolder) holder).textEt.addTextChangedListener(textWatcher);
             ((TextHolder) holder).textEt.setTag(textWatcher);
         } else if (holder instanceof DateHolder) {
-            ((DateHolder) holder).dateNameTv.setText(list.get(position -1).getFieldName() + ":");
+            ((DateHolder) holder).dateNameTv.setText(list.get(position -1).getFieldDesc() + ":");
             if (list.get(position -1).getFieldValue() != null) {
                 ((DateHolder) holder).dateTv.setText(toDate(list.get(position -1).getFieldValue()));
                 list.get(position -1).setFieldValue(toDate(list.get(position -1).getFieldValue()));
@@ -258,13 +258,13 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
                             ((DateHolder) holder).dateTv.setText(days);
 //                            list.get(position -1).setFieldValue(String.valueOf(getStringToDate(days)));
                             list.get(position -1).setFieldValue(days);
-//                            Log.i(TAG, list.get(position -1).getFieldName() + "-----" + toDate(list.get(position -1).getFieldValue()));
+//                            Log.i(TAG, list.get(position -1).getFieldDesc() + "-----" + toDate(list.get(position -1).getFieldValue()));
                         }
                     }, mYear, mMonth, mDay).show();
                 }
             });
         } else if (holder instanceof ListHolder){
-            ((ListHolder) holder).listNameTv.setText(list.get(position -1).getFieldName() + ":");
+            ((ListHolder) holder).listNameTv.setText(list.get(position -1).getFieldDesc() + ":");
             if (list.get(position -1).getDicts() != null && list.get(position -1).getDicts().size() > 0) {
                 List<String> values = new ArrayList<>();
                 int selectItem = -1;

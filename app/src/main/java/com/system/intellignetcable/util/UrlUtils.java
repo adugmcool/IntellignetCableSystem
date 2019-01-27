@@ -44,6 +44,6 @@ public class UrlUtils {
     public static final String METHOD_POST_SIGN_BOARD_LIST= "sign-board/list";
     public static final String FINDMAPEPCDATASTAT= "sys/findMapEPCDataStat";
     public static final String SIGNBOARDDETAIL= "sign-board/detail";
-
+    public static final String UPDATEUSER= "user/updateUser";
 
 }

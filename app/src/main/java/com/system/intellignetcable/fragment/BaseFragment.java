@@ -4,13 +4,14 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jph.takephoto.app.TakePhotoFragment;
 import com.system.intellignetcable.R;
 
 /**
  * Created by adu on 2018/12/2.
  */
 
-public class BaseFragment extends Fragment {
+public class BaseFragment extends TakePhotoFragment {
     protected TextView baseHintTv;
     protected View baseContentRl;
 

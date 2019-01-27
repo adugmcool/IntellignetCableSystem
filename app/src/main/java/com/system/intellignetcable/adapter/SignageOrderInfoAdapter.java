@@ -2,6 +2,7 @@ package com.system.intellignetcable.adapter;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -78,6 +79,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     private double mCurrentLon;
     private String mCurrentAdress;
     private MapView mapView;
+    private Bundle savedInstanceState;
 
     public double getmCurrentLat() {
         return mCurrentLat;
@@ -91,7 +93,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
         return mCurrentAdress;
     }
 
-    public SignageOrderInfoAdapter(Context context, List<SignageManagementBean.SignBoardBean.TemplateValuesBean> list, ImageAdapter imageAdapter) {
+    public SignageOrderInfoAdapter(Context context, List<SignageManagementBean.SignBoardBean.TemplateValuesBean> list, ImageAdapter imageAdapter, Bundle savedInstanceState) {
         this.context = context;
         this.list = list;
         this.inflater = LayoutInflater.from(context);
@@ -101,6 +103,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
         this.mMonth = ca.get(Calendar.MONTH);
         this.mDay = ca.get(Calendar.DAY_OF_MONTH);
         this.imageAdapter = imageAdapter;
+        this.savedInstanceState = savedInstanceState;
     }
 
     private void initMap() {
@@ -440,6 +443,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
         LocationHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            locationMv.onCreate(savedInstanceState);
         }
     }
 }

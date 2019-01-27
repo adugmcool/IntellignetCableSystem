@@ -78,14 +78,15 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
     private TakePhoto takePhoto;
     private List<File> picFiles;
     private String epcId;
-
+    private Bundle savedInstanceState;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         epcId = getIntent().getStringExtra("epcId");
-//        if(TextUtils.isEmpty(epcId)){
-            epcId = "E20068080000000000000002";
-//        }
+////        if(TextUtils.isEmpty(epcId)){
+//            epcId = "E20068080000000000000002";
+////        }
+        this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.fragment_order_mangement_detail);
         ButterKnife.bind(this);
         initData();
@@ -111,7 +112,7 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
         recyclerView.setLayoutManager(layoutManager);
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        signageOrderInfoAdapter = new SignageOrderInfoAdapter(this, templateValuesBeanList, imageAdapter);
+        signageOrderInfoAdapter = new SignageOrderInfoAdapter(this, templateValuesBeanList, imageAdapter, savedInstanceState);
         //设置Adapter
         recyclerView.setAdapter(signageOrderInfoAdapter);
         //设置分隔线

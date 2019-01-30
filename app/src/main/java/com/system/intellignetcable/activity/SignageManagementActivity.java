@@ -83,9 +83,7 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         epcId = getIntent().getStringExtra("epcId");
-////        if(TextUtils.isEmpty(epcId)){
-//            epcId = "E20068080000000000000002";
-////        }
+
         this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.fragment_order_mangement_detail);
         ButterKnife.bind(this);

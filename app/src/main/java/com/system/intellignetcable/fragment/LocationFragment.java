@@ -2,6 +2,7 @@ package com.system.intellignetcable.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,6 +34,8 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.Polyline;
+import com.amap.api.maps2d.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -85,6 +88,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
     //声明mListener对象，定位监听器
     private OnLocationChangedListener mListener = null;
     private MainActivity mainActivity;
+    private Polyline polyline;;
 
     public static LocationFragment getInstance() {
         if (locationFragment == null) {
@@ -138,6 +142,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
             public void afterTextChanged(Editable s) {
                 if (s.length() == 0) {
                     findMapDataStat();
+                    searchLv.setVisibility(View.GONE);
                 } else {
                     findByDetailAddress(s.toString());
                 }
@@ -242,7 +247,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                         Gson gson = new Gson();
                         MapDataBean mapDataBean = gson.fromJson(response.body(), MapDataBean.class);
                         if (mapDataBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-//                            aMap.clear();
+                            aMap.clear();
                             List<MapDataBean.ListBean> listBeans = mapDataBean.getList();
 
                             if (listBeans != null && !listBeans.isEmpty()) {
@@ -391,14 +396,14 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                                 });
                             }
                         } else {
-                            showFail();
+//                            showFail();
                             Toast.makeText(getActivity(), locationSearchBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
-                        showFail();
+//                        showFail();
                         Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -419,47 +424,60 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                                 searchLv.setVisibility(View.GONE);
                                 Toast.makeText(getActivity(), "没有搜到相关数据！", Toast.LENGTH_SHORT).show();
                             } else if (mapDataDetailBean.getList().size() > 0) {
+                                aMap.clear();
+                                List<LatLng> latLngs = new ArrayList<>();
                                 for (int i = 0; i < mapDataDetailBean.getList().size(); i++) {
-                                    MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(i);
-                                    listBean.setDetailAddress(detailAddress);
+                                    LatLng latLng = new LatLng(Double.parseDouble(mapDataDetailBean.getList().get(i).getLatitude()), Double.parseDouble(mapDataDetailBean.getList().get(i).getLongitude()));
+                                    latLngs.add(latLng);
+                                    MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory
+                                            .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                            .position(latLng)
+                                            .draggable(true);
+                                    aMap.addMarker(markerOption);
                                 }
-//                                aMap.clear();
-                                MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(0);
-                                LatLng latLng = new LatLng(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("ListBean", listBean);
-
-                                chooseMyLocation(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));
-                                View view = View.inflate(getActivity().getApplicationContext(), R.layout.item_location_pop, null);
-                                TextView nameTv = view.findViewById(R.id.name_tv);
-                                TextView numTv = view.findViewById(R.id.num_tv);
-                                nameTv.setText(listBean.getDetailAddress());
-                                numTv.setText(mapDataDetailBean.getList().size() + "个");
-                                //将View转化为Bitmap
-                                BitmapDescriptor descriptor = BitmapDescriptorFactory.fromView(view);
-                                MarkerOptions options = new MarkerOptions().position(latLng).icon(descriptor).zIndex(9).draggable(false);
-                                Marker marker = aMap.addMarker(options);
-                                marker.setObject(mapDataDetailBean.getList());
+                                polyline =aMap.addPolyline(new PolylineOptions().
+                                        addAll(latLngs).width(10).color(Color.BLUE));
                                 aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
-                                        ArrayList<MapDataDetailBean.ListBean> listBean = (ArrayList<MapDataDetailBean.ListBean>) marker.getObject();
-                                        Intent intent = new Intent(getActivity(), EpcListActivity.class);
-                                        intent.putExtra("listBeans", (Serializable) listBean);
-                                        startActivity(intent);
                                         return false;
                                     }
                                 });
+//                                for (int i = 0; i < mapDataDetailBean.getList().size(); i++) {
+//                                    MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(i);
+//                                    listBean.setDetailAddress(detailAddress);
+//
+//                                }
+////                                aMap.clear();
+//                                MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(0);
+//                                LatLng latLng = new LatLng(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));
+//                                Bundle bundle = new Bundle();
+//                                bundle.putSerializable("ListBean", listBean);
+//
+//                                chooseMyLocation(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));
+//                                View view = View.inflate(getActivity().getApplicationContext(), R.layout.item_location_markers, null);
+//                                //将View转化为Bitmap
+//                                BitmapDescriptor descriptor = BitmapDescriptorFactory.fromView(view);
+//                                MarkerOptions options = new MarkerOptions().position(latLng).icon(descriptor).zIndex(9).draggable(false);
+//                                Marker marker = aMap.addMarker(options);
+//                                marker.setObject(mapDataDetailBean.getList());
+//                                aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+//                                    @Override
+//                                    public boolean onMarkerClick(Marker marker) {
+//
+//                                        return false;
+//                                    }
+//                                });
                             }
                         } else {
-                            showFail();
+//                            showFail();
                             Toast.makeText(getActivity(), mapDataDetailBean.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
-                        showFail();
+//                        showFail();
                         Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();
                     }
                 });

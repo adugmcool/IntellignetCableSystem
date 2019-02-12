@@ -2,6 +2,7 @@ package com.system.intellignetcable.adapter;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -26,13 +29,26 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.model.PolylineOptions;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Progress;
+import com.lzy.okgo.model.Response;
 import com.system.intellignetcable.R;
+import com.system.intellignetcable.bean.MapDataDetailBean;
 import com.system.intellignetcable.bean.SignageManagementBean;
 import com.system.intellignetcable.fragment.LocationFragment;
+import com.system.intellignetcable.util.UrlUtils;
 import com.system.intellignetcable.view.MyGridView;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,6 +95,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     private double mCurrentLon;
     private String mCurrentAdress;
     private MapView mapView;
+    private ImageView mapIv;
     private Bundle savedInstanceState;
 
     public double getmCurrentLat() {
@@ -311,6 +328,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
             ((GridViewHolder) holder).gridview.setAdapter(imageAdapter);
         }else if (holder instanceof LocationHolder){
             mapView = ((LocationHolder) holder).locationMv;
+            mapIv = ((LocationHolder) holder).mapIv;
             initMap();
         }
     }
@@ -348,6 +366,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
                 //可在其中解析amapLocation获取相应内容。
                 double mCurrentLat = aMapLocation.getLatitude();
                 double mCurrentLon = aMapLocation.getLongitude();
+
                 latLng = new LatLng(mCurrentLat, mCurrentLon);//构造一个位置
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
@@ -359,6 +378,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
                     mListener.onLocationChanged(aMapLocation);
 
                     isFirstLoc = false;
+                    downLoadMapPic(mCurrentLon+"", mCurrentLat+"");
                 }
 
             } else {
@@ -439,11 +459,42 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     class LocationHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.location_mv)
         MapView locationMv;
+        @BindView(R.id.map_iv)
+        ImageView mapIv;
 
         LocationHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             locationMv.onCreate(savedInstanceState);
         }
+    }
+
+
+    private void downLoadMapPic(String langitude, String longitude){
+        OkGo.<File>get("https://restapi.amap.com/v3/staticmap" + "?location=" + langitude + "," + longitude +
+                "&zoom=10&size=750*300&markers=mid,,A:" + langitude + "," + longitude + "&key=5282bdd1593bd059ef452a3ad8626ae3")
+                .tag(this)
+                .execute(new FileCallback() {
+                    @Override
+                    public void onSuccess(Response<File> response) {
+                        File file = response.body();
+                        try {
+
+                        }catch (Exception e){
+                            Glide.with(context).load(file).into(mapIv);
+                        }
+                    }
+
+                    @Override
+                    public void downloadProgress(Progress progress) {
+
+                    }
+
+                    @Override
+                    public void onError(Response<File> response) {
+
+                        super.onError(response);
+                    }
+                });
     }
 }

@@ -443,31 +443,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                                         return false;
                                     }
                                 });
-//                                for (int i = 0; i < mapDataDetailBean.getList().size(); i++) {
-//                                    MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(i);
-//                                    listBean.setDetailAddress(detailAddress);
-//
-//                                }
-////                                aMap.clear();
-//                                MapDataDetailBean.ListBean listBean = mapDataDetailBean.getList().get(0);
-//                                LatLng latLng = new LatLng(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));
-//                                Bundle bundle = new Bundle();
-//                                bundle.putSerializable("ListBean", listBean);
-//
-//                                chooseMyLocation(Double.parseDouble(listBean.getLatitude()), Double.parseDouble(listBean.getLongitude()));
-//                                View view = View.inflate(getActivity().getApplicationContext(), R.layout.item_location_markers, null);
-//                                //将View转化为Bitmap
-//                                BitmapDescriptor descriptor = BitmapDescriptorFactory.fromView(view);
-//                                MarkerOptions options = new MarkerOptions().position(latLng).icon(descriptor).zIndex(9).draggable(false);
-//                                Marker marker = aMap.addMarker(options);
-//                                marker.setObject(mapDataDetailBean.getList());
-//                                aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
-//                                    @Override
-//                                    public boolean onMarkerClick(Marker marker) {
-//
-//                                        return false;
-//                                    }
-//                                });
+
                             }
                         } else {
 //                            showFail();

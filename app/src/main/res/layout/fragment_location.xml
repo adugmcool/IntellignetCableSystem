@@ -6,7 +6,7 @@
     android:background="@color/color_F0F3F5"
     android:clickable="true">
 
-    <com.amap.api.maps2d.MapView
+    <com.amap.api.maps.MapView
         android:id="@+id/location_mv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

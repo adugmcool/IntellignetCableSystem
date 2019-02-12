@@ -94,6 +94,9 @@
         <meta-data android:name="com.amap.api.v2.apikey"
             android:value="2f040803ec256510306576c7ff499115"/>
 
+        <activity android:name="com.amap.api.maps.offlinemap.OfflineMapActivity"
+            android:screenOrientation="portrait"  />
+
         <!--<meta-data-->
         <!--android:name="com.baidu.lbsapi.API_KEY"-->
         <!--android:value="RIRv9U2SUEG17ksiTiKj6F3oEbXw8oE2" />-->

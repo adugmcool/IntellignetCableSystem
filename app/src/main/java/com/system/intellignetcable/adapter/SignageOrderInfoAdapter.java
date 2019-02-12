@@ -19,34 +19,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.CameraUpdateFactory;
-import com.amap.api.maps2d.LocationSource;
-import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
-import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.Marker;
-import com.amap.api.maps2d.model.MarkerOptions;
-import com.amap.api.maps2d.model.PolylineOptions;
+
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
 import com.system.intellignetcable.R;
-import com.system.intellignetcable.bean.MapDataDetailBean;
 import com.system.intellignetcable.bean.SignageManagementBean;
-import com.system.intellignetcable.fragment.LocationFragment;
-import com.system.intellignetcable.util.UrlUtils;
 import com.system.intellignetcable.view.MyGridView;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
 
 import java.io.File;
 import java.text.ParseException;
@@ -69,8 +61,8 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     private static final int DATE_TYPE = 1;
     private static final int LIST_TYPE = 2;
     private static final int NAME_TYPE = 3;
-    private static final int IMAGE_TYPE = 4;
-    private static final int MAP_TYPE = 5;
+    private static final int IMAGE_TYPE = 5;
+    private static final int MAP_TYPE = 4;
     private Context context;
     private List<SignageManagementBean.SignBoardBean.TemplateValuesBean> list;
     private LayoutInflater inflater;
@@ -320,9 +312,9 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
             if (position == 0) {
                 ((TypeNameHolder) holder).typeTv.setText(R.string.worksheet_info);
             }else if (position == list.size() + 1){
-                ((TypeNameHolder) holder).typeTv.setText(R.string.picture_info);
-            }else {
                 ((TypeNameHolder) holder).typeTv.setText(R.string.location);
+            }else {
+                ((TypeNameHolder) holder).typeTv.setText(R.string.picture_info);
             }
         }else if (holder instanceof GridViewHolder){
             ((GridViewHolder) holder).gridview.setAdapter(imageAdapter);
@@ -351,9 +343,10 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
                 return TEXT_TYPE;
             }
         }else if (position == list.size() + 2) {
-            return IMAGE_TYPE;
-        } else if(position == list.size() + 4){
             return MAP_TYPE;
+
+        } else if(position == list.size() + 4){
+            return IMAGE_TYPE;
         }else {
             return -1;
         }

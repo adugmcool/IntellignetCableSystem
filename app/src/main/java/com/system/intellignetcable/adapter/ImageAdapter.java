@@ -49,13 +49,13 @@ public class ImageAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
-        if (convertView == null) {
+//        if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_imageview, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+//        }else {
+//            viewHolder = (ViewHolder) convertView.getTag();
+//        }
         if (list == null){
             viewHolder.image.setImageResource(R.drawable.add_photo);
             viewHolder.deleteIv.setVisibility(View.GONE);
@@ -67,17 +67,7 @@ public class ImageAdapter extends BaseAdapter {
                 }
             });
         }else {
-            if (position == list.size()){
-                viewHolder.image.setImageResource(R.drawable.add_photo);
-                viewHolder.deleteIv.setVisibility(View.GONE);
-                viewHolder.image.setEnabled(true);
-                viewHolder.image.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onAddOrDeleteImageClickListener.addImageClick();
-                    }
-                });
-            }else {
+            if (position != list.size()){
                 Glide.with(context).load(list.get(position).getPath()).into(viewHolder.image);
                 viewHolder.image.setEnabled(false);
                 viewHolder.deleteIv.setVisibility(View.VISIBLE);
@@ -85,6 +75,16 @@ public class ImageAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         onAddOrDeleteImageClickListener.deleteImageClick(position);
+                    }
+                });
+            }else {
+                viewHolder.image.setBackgroundResource(R.drawable.add_photo);
+                viewHolder.deleteIv.setVisibility(View.GONE);
+                viewHolder.image.setEnabled(true);
+                viewHolder.image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onAddOrDeleteImageClickListener.addImageClick();
                     }
                 });
             }

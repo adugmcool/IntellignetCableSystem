@@ -25,17 +25,18 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.CameraUpdateFactory;
-import com.amap.api.maps2d.LocationSource;
-import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.BitmapDescriptor;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
-import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.Marker;
-import com.amap.api.maps2d.model.MarkerOptions;
-import com.amap.api.maps2d.model.Polyline;
-import com.amap.api.maps2d.model.PolylineOptions;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.Polyline;
+import com.amap.api.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -43,10 +44,12 @@ import com.lzy.okgo.model.Response;
 import com.system.intellignetcable.R;
 import com.system.intellignetcable.activity.EpcListActivity;
 import com.system.intellignetcable.activity.MainActivity;
+import com.system.intellignetcable.activity.OrderInfoDetailActivity;
 import com.system.intellignetcable.adapter.StringListAdapter;
 import com.system.intellignetcable.bean.LocationSearchBean;
 import com.system.intellignetcable.bean.MapDataBean;
 import com.system.intellignetcable.bean.MapDataDetailBean;
+import com.system.intellignetcable.bean.OrderListBean;
 import com.system.intellignetcable.util.ParamUtil;
 import com.system.intellignetcable.util.SharedPreferencesUtil;
 import com.system.intellignetcable.util.UrlUtils;
@@ -86,14 +89,14 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
     //标识，用于判断是否只显示一次定位信息和用户重新定位
     private boolean isFirstLoc = true;
     //声明mListener对象，定位监听器
-    private OnLocationChangedListener mListener = null;
+    private LocationSource.OnLocationChangedListener mListener = null;
     private MainActivity mainActivity;
-    private Polyline polyline;;
+    private Polyline polyline;
 
     public static LocationFragment getInstance() {
-        if (locationFragment == null) {
+//        if (locationFragment == null) {
             locationFragment = new LocationFragment();
-        }
+//        }
         return locationFragment;
     }
 
@@ -144,11 +147,14 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                     findMapDataStat();
                     searchLv.setVisibility(View.GONE);
                 } else {
-                    findByDetailAddress(s.toString());
+//                    findByDetailAddress(s.toString());
+                    int type = (int) SharedPreferencesUtil.get(mainActivity, ParamUtil.TYPE, 2);
+                    int userId = (int) SharedPreferencesUtil.get(mainActivity, ParamUtil.USER_ID, 0);
+                    searchList(userId, type, s.toString(), "1", "10");
                 }
             }
         });
-        mHandler.sendEmptyMessageDelayed(1, 5000);
+//        mHandler.sendEmptyMessageDelayed(1, 5000);
         return view;
     }
 
@@ -212,14 +218,13 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                 latLng = new LatLng(mCurrentLat, mCurrentLon);//构造一个位置
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
+                    isFirstLoc = false;
                     //设置缩放级别
                     aMap.moveCamera(CameraUpdateFactory.zoomTo(14));
                     //将地图移动到定位点
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(mCurrentLat, mCurrentLon)));
                     //点击定位按钮 能够将地图的中心移动到定位点
                     mListener.onLocationChanged(aMapLocation);
-
-                    isFirstLoc = false;
                 }
 
             } else {
@@ -247,7 +252,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                         Gson gson = new Gson();
                         MapDataBean mapDataBean = gson.fromJson(response.body(), MapDataBean.class);
                         if (mapDataBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-                            aMap.clear();
+//                            aMap.clear();
                             List<MapDataBean.ListBean> listBeans = mapDataBean.getList();
 
                             if (listBeans != null && !listBeans.isEmpty()) {
@@ -323,6 +328,11 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
     public void onStop() {
         super.onStop();
         mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
@@ -454,6 +464,66 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                     @Override
                     public void onError(Response<String> response) {
 //                        showFail();
+                        Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void searchList(int userId, int type, String workAddress, String pageNo, String pageSize) {
+        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_LIST + "?userId=" + userId + "&type=" + type + "&workAddress=" + workAddress + "&pageNo=" + pageNo + "&pageSize=" + pageSize)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Gson gson = new Gson();
+                        final OrderListBean orderListBean = gson.fromJson(response.body(), OrderListBean.class);
+                        if (orderListBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
+                            if (orderListBean.getPage().getList() == null || orderListBean.getPage().getList().size() == 0) {
+                                searchLv.setVisibility(View.GONE);
+//                                Toast.makeText(getActivity(), "没有搜到相关数据！", Toast.LENGTH_SHORT).show();
+                            } else if (orderListBean.getPage().getList().size() > 0) {
+//                                List<String> strings = new ArrayList<>();
+//                                searchLv.setVisibility(View.VISIBLE);
+//                                for (int i = 0; i < orderListBean.getPage().getList().size(); i++) {
+//                                    strings.add(orderListBean.getPage().getList().get(i).getWorkAddress());
+//                                }
+//                                adapter = new StringListAdapter(getActivity(), strings);
+//                                searchLv.setAdapter(adapter);
+//                                searchLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                    @Override
+//                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                        mainActivity.hideSoftInput(view);
+//                                        Intent intent = new Intent(mainActivity, OrderInfoDetailActivity.class);
+//                                        intent.putExtra(ParamUtil.WORK_ORDER_ID, orderListBean.getPage().getList().get(position).getWorkOrderId());
+//                                        startActivity(intent);
+//                                    }
+//                                });
+
+                                final List<String> strings = new ArrayList<>();
+                                searchLv.setVisibility(View.VISIBLE);
+                                for (int i = 0; i < orderListBean.getPage().getList().size(); i++) {
+                                    strings.add(orderListBean.getPage().getList().get(i).getWorkAddress());
+                                }
+                                StringListAdapter adapter = new StringListAdapter(getActivity(), strings);
+                                searchLv.setAdapter(adapter);
+                                searchLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        mainActivity.hideSoftInput(view);
+                                        searchLv.setVisibility(View.GONE);
+                                        searchList(strings.get(position));
+                                    }
+                                });
+                            }
+                        } else {
+                            showFail();
+                            Toast.makeText(getActivity(), orderListBean.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        showFail();
                         Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();
                     }
                 });

@@ -355,8 +355,10 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
     public void deleteImageClick(int pos) {
         if (imageList.get(pos).isFromServe()) {
             imageFromServeList.remove(pos);
-        } else {
+        } else if (imageFromServeList != null && imageFromServeList.size() > 0){
             picFiles.remove(pos - (imageFromServeList.size() - 1));
+        }else {
+            picFiles.remove(pos);
         }
         imageList.remove(pos);
         imageAdapter.notifyDataSetChanged();

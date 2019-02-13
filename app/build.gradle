@@ -64,5 +64,5 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //    implementation files('libs/AMap_Location_V4.4.0_20181122.jar')
     //    implementation files('libs/AMap2DMap_5.2.0_AMapSearch_6.5.0_20180930.jar')
-    implementation files('libs/AMap3DMap_6.6.0_AMapSearch_6.5.0_AMapLocation_4.5.0_20190121.jar')
+    implementation files('libs/AMap3DMap_6.6.0_AMapNavi_6.5.0_AMapSearch_6.5.0_AMapLocation_4.5.0_20190121.jar')
 }

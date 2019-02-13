@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -35,8 +36,15 @@ import com.amap.api.maps.model.LatLng;
 
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.Poi;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.amap.api.navi.AMapNavi;
+import com.amap.api.navi.AmapNaviPage;
+import com.amap.api.navi.AmapNaviParams;
+import com.amap.api.navi.AmapNaviType;
+import com.amap.api.navi.INaviInfoCallback;
+import com.amap.api.navi.model.AMapNaviLocation;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -45,10 +53,12 @@ import com.system.intellignetcable.R;
 import com.system.intellignetcable.activity.EpcListActivity;
 import com.system.intellignetcable.activity.MainActivity;
 import com.system.intellignetcable.activity.OrderInfoDetailActivity;
+import com.system.intellignetcable.activity.SignageManagementActivity;
 import com.system.intellignetcable.adapter.StringListAdapter;
 import com.system.intellignetcable.bean.LocationSearchBean;
 import com.system.intellignetcable.bean.MapDataBean;
 import com.system.intellignetcable.bean.MapDataDetailBean;
+import com.system.intellignetcable.bean.OrderInfoDetailBean;
 import com.system.intellignetcable.bean.OrderListBean;
 import com.system.intellignetcable.util.ParamUtil;
 import com.system.intellignetcable.util.SharedPreferencesUtil;
@@ -77,6 +87,9 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
     ListView searchLv;
     @BindView(R.id.search_iv)
     ImageView searchIv;
+    @BindView(R.id.navi_btn)
+    Button naviBtn;
+
 
     private int userId;
     //初始化地图控制器对象
@@ -155,6 +168,86 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
             }
         });
 //        mHandler.sendEmptyMessageDelayed(1, 5000);
+        naviBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(naviMarker != null && naviBean != null){
+                    Poi start = new Poi("", latLng, "");
+                    Poi end = new Poi(naviBean.getDetailAddress(), new LatLng(Double.parseDouble(naviBean.getLatitude()), Double.parseDouble(naviBean.getLongitude())), "B000A83M61");
+                    AmapNaviPage.getInstance().showRouteActivity(getActivity(), new AmapNaviParams(start, null, end, AmapNaviType.DRIVER), new INaviInfoCallback() {
+                        @Override
+                        public void onInitNaviFailure() {
+
+                        }
+
+                        @Override
+                        public void onGetNavigationText(String s) {
+
+                        }
+
+                        @Override
+                        public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
+
+                        }
+
+                        @Override
+                        public void onArriveDestination(boolean b) {
+
+                        }
+
+                        @Override
+                        public void onStartNavi(int i) {
+
+                        }
+
+                        @Override
+                        public void onCalculateRouteSuccess(int[] ints) {
+
+                        }
+
+                        @Override
+                        public void onCalculateRouteFailure(int i) {
+
+                        }
+
+                        @Override
+                        public void onStopSpeaking() {
+
+                        }
+
+                        @Override
+                        public void onReCalculateRoute(int i) {
+
+                        }
+
+                        @Override
+                        public void onExitPage(int i) {
+
+                        }
+
+                        @Override
+                        public void onStrategyChanged(int i) {
+
+                        }
+
+                        @Override
+                        public View getCustomNaviBottomView() {
+                            return null;
+                        }
+
+                        @Override
+                        public View getCustomNaviView() {
+                            return null;
+                        }
+
+                        @Override
+                        public void onArrivedWayPoint(int i) {
+
+                        }
+                    });
+                }
+            }
+        });
         return view;
     }
 
@@ -252,7 +345,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                         Gson gson = new Gson();
                         MapDataBean mapDataBean = gson.fromJson(response.body(), MapDataBean.class);
                         if (mapDataBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
-//                            aMap.clear();
+                            aMap.clear();
                             List<MapDataBean.ListBean> listBeans = mapDataBean.getList();
 
                             if (listBeans != null && !listBeans.isEmpty()) {
@@ -469,6 +562,73 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                 });
     }
 
+    private Marker naviMarker;
+    private OrderInfoDetailBean.WorkOrderBean.ListBean naviBean;
+
+    private void orderDetail(int orderId) {
+        OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_DETAIL)
+                .tag(this)
+                .headers("token", (String) SharedPreferencesUtil.get(getActivity(), ParamUtil.TOKEN, ""))
+                .params("workOrderId", orderId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Gson gson = new Gson();
+                        OrderInfoDetailBean orderInfoDetailBean = gson.fromJson(response.body(), OrderInfoDetailBean.class);
+                        if (orderInfoDetailBean.getMsg().equals(UrlUtils.METHOD_POST_SUCCESS)) {
+                            if (orderInfoDetailBean.getWorkOrder().getList() == null || orderInfoDetailBean.getWorkOrder().getList().size() == 0) {
+                                searchLv.setVisibility(View.GONE);
+                                Toast.makeText(getActivity(), "没有搜到相关数据！", Toast.LENGTH_SHORT).show();
+                            } else if (orderInfoDetailBean.getWorkOrder().getList().size() > 0) {
+                                aMap.clear();
+                                List<LatLng> latLngs = new ArrayList<>();
+
+                                for (int i = 0; i < orderInfoDetailBean.getWorkOrder().getList().size(); i++) {
+                                    if (i == 0) {
+                                        chooseMyLocation(Double.parseDouble(orderInfoDetailBean.getWorkOrder().getList().get(i).getLatitude()), Double.parseDouble(orderInfoDetailBean.getWorkOrder().getList().get(i).getLongitude()));
+                                    }
+                                    LatLng latLng = new LatLng(Double.parseDouble(orderInfoDetailBean.getWorkOrder().getList().get(i).getLatitude()), Double.parseDouble(orderInfoDetailBean.getWorkOrder().getList().get(i).getLongitude()));
+                                    latLngs.add(latLng);
+                                    MarkerOptions markerOption = new MarkerOptions().icon(BitmapDescriptorFactory
+                                            .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                            .position(latLng)
+                                            .draggable(true);
+                                    Marker marker = aMap.addMarker(markerOption);
+                                    marker.setObject(orderInfoDetailBean.getWorkOrder().getList().get(i));
+                                }
+                                polyline =aMap.addPolyline(new PolylineOptions().
+                                        addAll(latLngs).width(10).color(Color.BLUE));
+                                aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+                                        if(naviMarker != null && naviMarker.getObject() == naviBean){
+                                            naviMarker = null;
+                                            naviBean = null;
+                                            naviBtn.setVisibility(View.GONE);
+                                            return false;
+                                        }
+                                        naviBean = (OrderInfoDetailBean.WorkOrderBean.ListBean) marker.getObject();
+                                        naviMarker = marker;
+                                        naviBtn.setVisibility(View.VISIBLE);
+                                        return false;
+                                    }
+                                });
+
+                            }
+                        } else {
+                            showFail();
+                            Toast.makeText(getActivity(), orderInfoDetailBean.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        Toast.makeText(getActivity(), "请求错误！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
     private void searchList(int userId, int type, String workAddress, String pageNo, String pageSize) {
         OkGo.<String>post(UrlUtils.TEST_URL + UrlUtils.METHOD_POST_WORK_ORDER_LIST + "?userId=" + userId + "&type=" + type + "&workAddress=" + workAddress + "&pageNo=" + pageNo + "&pageSize=" + pageSize)
                 .tag(this)
@@ -511,7 +671,7 @@ public class LocationFragment extends BaseFragment implements LocationSource, AM
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         mainActivity.hideSoftInput(view);
                                         searchLv.setVisibility(View.GONE);
-                                        searchList(strings.get(position));
+                                        orderDetail(orderListBean.getPage().getList().get(position).getWorkOrderId());
                                     }
                                 });
                             }

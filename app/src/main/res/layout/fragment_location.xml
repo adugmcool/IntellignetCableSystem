@@ -30,4 +30,20 @@
         android:layout_marginRight="8dp"
         android:visibility="gone"/>
 
+
+    <Button
+        android:id="@+id/navi_btn"
+        android:visibility="gone"
+        android:layout_width="81dp"
+        android:layout_height="81dp"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="26dp"
+        android:text="导航"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:background="@drawable/shape_scan_oval"/>
+
+
 </RelativeLayout>

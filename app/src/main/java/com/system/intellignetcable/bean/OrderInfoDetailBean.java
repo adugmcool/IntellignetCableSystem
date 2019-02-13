@@ -8,11 +8,9 @@ import java.util.List;
  */
 
 public class OrderInfoDetailBean implements Serializable {
-
-
     /**
      * msg : success
-     * workOrder : {"signsNum":3,"workAddress":"北燕路","workUserId":4,"workUserName":"测试普通用户","sendUserId":3,"sendUserName":"测试管理员","userTeamplateName":"全部字段","userTeamplateId":1,"createDate":"2018-11-28 06:24:25","workOrderId":6,"list":["A11801001001180800000A10","A11801001001180800000A11","A11801001001180800000A12"],"status":3}
+     * workOrder : {"signsNum":2,"workAddress":"通灵路","workUserId":4,"workUserName":"测试普通用户","sendUserId":3,"sendUserName":"测试管理员","userTeamplateName":"全部字段","userTeamplateId":1,"createDate":"2018-11-28 06:29:23","workOrderId":12,"list":[{"epc":"A11801001001180800000A24","epcNo":"1","longitude":"116.047246","latitude":"39.935961","detailAddress":"详情地址"},{"epc":"A11801001001180800000A25","epcNo":"2","longitude":"116.096114","latitude":"39.947468","detailAddress":"详情地址"}],"status":3}
      * code : 0
      */
 
@@ -44,19 +42,19 @@ public class OrderInfoDetailBean implements Serializable {
         this.code = code;
     }
 
-    public static class WorkOrderBean implements Serializable{
+    public static class WorkOrderBean {
         /**
-         * signsNum : 3
-         * workAddress : 北燕路
+         * signsNum : 2
+         * workAddress : 通灵路
          * workUserId : 4
          * workUserName : 测试普通用户
          * sendUserId : 3
          * sendUserName : 测试管理员
          * userTeamplateName : 全部字段
          * userTeamplateId : 1
-         * createDate : 2018-11-28 06:24:25
-         * workOrderId : 6
-         * list : ["A11801001001180800000A10","A11801001001180800000A11","A11801001001180800000A12"]
+         * createDate : 2018-11-28 06:29:23
+         * workOrderId : 12
+         * list : [{"epc":"A11801001001180800000A24","epcNo":"1","longitude":"116.047246","latitude":"39.935961","detailAddress":"详情地址"},{"epc":"A11801001001180800000A25","epcNo":"2","longitude":"116.096114","latitude":"39.947468","detailAddress":"详情地址"}]
          * status : 3
          */
 
@@ -71,7 +69,7 @@ public class OrderInfoDetailBean implements Serializable {
         private String createDate;
         private int workOrderId;
         private int status;
-        private List<String> list;
+        private List<ListBean> list;
 
         public int getSignsNum() {
             return signsNum;
@@ -161,12 +159,68 @@ public class OrderInfoDetailBean implements Serializable {
             this.status = status;
         }
 
-        public List<String> getList() {
+        public List<ListBean> getList() {
             return list;
         }
 
-        public void setList(List<String> list) {
+        public void setList(List<ListBean> list) {
             this.list = list;
+        }
+
+        public static class ListBean {
+            /**
+             * epc : A11801001001180800000A24
+             * epcNo : 1
+             * longitude : 116.047246
+             * latitude : 39.935961
+             * detailAddress : 详情地址
+             */
+
+            private String epc;
+            private String epcNo;
+            private String longitude;
+            private String latitude;
+            private String detailAddress;
+
+            public String getEpc() {
+                return epc;
+            }
+
+            public void setEpc(String epc) {
+                this.epc = epc;
+            }
+
+            public String getEpcNo() {
+                return epcNo;
+            }
+
+            public void setEpcNo(String epcNo) {
+                this.epcNo = epcNo;
+            }
+
+            public String getLongitude() {
+                return longitude;
+            }
+
+            public void setLongitude(String longitude) {
+                this.longitude = longitude;
+            }
+
+            public String getLatitude() {
+                return latitude;
+            }
+
+            public void setLatitude(String latitude) {
+                this.latitude = latitude;
+            }
+
+            public String getDetailAddress() {
+                return detailAddress;
+            }
+
+            public void setDetailAddress(String detailAddress) {
+                this.detailAddress = detailAddress;
+            }
         }
     }
 }

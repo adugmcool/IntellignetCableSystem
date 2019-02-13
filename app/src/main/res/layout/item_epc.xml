@@ -37,15 +37,42 @@
             android:layout_gravity="center_vertical"
             android:textColor="@color/color_FF4A4A4A"
             android:textSize="21sp" />
-
-        <TextView
-            android:id="@+id/address_tv"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/color_FF4A4A4A"
+            android:orientation="horizontal"
             android:layout_marginTop="8dp"
-            android:textSize="21sp" />
+            >
+
+
+            <TextView
+                android:id="@+id/navi_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="导航"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:background="@drawable/shape_scan_bg"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/address_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/navi_btn"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_FF4A4A4A"
+                android:layout_marginRight="5dp"
+                android:textSize="21sp" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

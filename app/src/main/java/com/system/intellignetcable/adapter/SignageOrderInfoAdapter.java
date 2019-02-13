@@ -357,8 +357,9 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 //可在其中解析amapLocation获取相应内容。
-                double mCurrentLat = aMapLocation.getLatitude();
-                double mCurrentLon = aMapLocation.getLongitude();
+                 mCurrentLat = aMapLocation.getLatitude();
+                 mCurrentLon = aMapLocation.getLongitude();
+                 mCurrentAdress = aMapLocation.getAddress();
 
                 latLng = new LatLng(mCurrentLat, mCurrentLon);//构造一个位置
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置

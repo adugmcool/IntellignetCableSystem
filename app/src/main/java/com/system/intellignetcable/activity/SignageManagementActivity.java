@@ -231,14 +231,23 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
     // 将所有参数拼接
     private void getParamsString() {
         StringBuilder sb = new StringBuilder("");
-        for (int i = 0; i < signageManagementBean.getSignBoard().getTemplateValues().size(); i++) {
-            sb.append(signageManagementBean.getSignBoard().getTemplateValues().get(i).getFieldName() + "=" + signageManagementBean.getSignBoard().getTemplateValues().get(i).getFieldValue() + "&");
+        if(signageManagementBean != null && signageManagementBean.getSignBoard()!= null && signageManagementBean.getSignBoard().getTemplateValues() != null){
+            for (int i = 0; i < signageManagementBean.getSignBoard().getTemplateValues().size(); i++) {
+                sb.append(signageManagementBean.getSignBoard().getTemplateValues().get(i).getFieldName() + "=" + signageManagementBean.getSignBoard().getTemplateValues().get(i).getFieldValue() + "&");
+            }
+            Log.i(TAG, "urlString----" + sb.substring(0, sb.length() - 1));
         }
-        Log.i(TAG, "urlString----" + sb.substring(0, sb.length() - 1));
-        saveOrUpdate(signageManagementBean.getSignBoard().getEpc(), signageManagementBean.getSignBoard().getUserId(),
-                signageManagementBean.getSignBoard().getWorkOrderId(), getImageUrls(),
-                String.valueOf(signageOrderInfoAdapter.getmCurrentLon()), String.valueOf(signageOrderInfoAdapter.getmCurrentLat()),
-                signageOrderInfoAdapter.getmCurrentAdress(), sb.substring(0, sb.length() - 1), picFiles);
+
+        if(signageManagementBean.getSignBoard() == null){
+            Toast.makeText(this, "工单信息不存在", Toast.LENGTH_SHORT).show();
+            return;
+        }
+       if(signageManagementBean.getSignBoard() != null){
+           saveOrUpdate(signageManagementBean.getSignBoard().getEpc(), signageManagementBean.getSignBoard().getUserId(),
+                   signageManagementBean.getSignBoard().getWorkOrderId(), getImageUrls(),
+                   String.valueOf(signageOrderInfoAdapter.getmCurrentLon()), String.valueOf(signageOrderInfoAdapter.getmCurrentLat()),
+                   signageOrderInfoAdapter.getmCurrentAdress(), sb.substring(0, sb.length() - 1), picFiles);
+       }
     }
 
     //保存或修改epc

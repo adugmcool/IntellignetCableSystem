@@ -85,7 +85,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     private OnLocationChangedListener mListener = null;
     private double mCurrentLat;
     private double mCurrentLon;
-    private String mCurrentAdress;
+    private String mCurrentAdress = "";
     private MapView mapView;
     private ImageView mapIv;
     private Bundle savedInstanceState;

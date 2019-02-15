@@ -410,4 +410,19 @@ public class SignageManagementActivity extends TakePhotoActivity implements Imag
         imageList.clear();
         super.onDestroy();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            double langitude = data.getDoubleExtra("lan", 0);
+            double longitude = data.getDoubleExtra("long", 0);
+            String address = data.getStringExtra("address");
+            if(langitude != 0 && longitude != 0){
+                signageOrderInfoAdapter.setmCurrentLat(langitude);
+                signageOrderInfoAdapter.setmCurrentLon(longitude);
+                signageOrderInfoAdapter.setmCurrentAdress(address);
+            }
+        }
+    }
 }

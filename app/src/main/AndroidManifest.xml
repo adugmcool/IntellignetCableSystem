@@ -79,6 +79,8 @@
         <activity android:name=".activity.EpcListActivity"
             android:launchMode="singleTask"/>
 
+        <activity android:name=".activity.EditLocActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".activity.OrderSearchResultActivity"
             android:launchMode="singleTask"

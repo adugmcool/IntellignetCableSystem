@@ -119,4 +119,22 @@ public class EpcListActivity extends BaseActivity {
         initMap();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
+    }
+
 }

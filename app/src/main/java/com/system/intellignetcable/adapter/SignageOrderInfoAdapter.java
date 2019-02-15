@@ -1,7 +1,9 @@
 package com.system.intellignetcable.adapter;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +34,7 @@ import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
 import com.system.intellignetcable.R;
+import com.system.intellignetcable.activity.EditLocActivity;
 import com.system.intellignetcable.bean.SignageManagementBean;
 import com.system.intellignetcable.view.MyGridView;
 import com.amap.api.maps.AMap;
@@ -73,7 +76,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     private ImageAdapter imageAdapter;
     //定位相关
     //初始化地图控制器对象
-    private AMap aMap;
+//    private AMap aMap;
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明AMapLocationClientOption对象
@@ -86,7 +89,7 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     private double mCurrentLat;
     private double mCurrentLon;
     private String mCurrentAdress = "";
-    private MapView mapView;
+//    private MapView mapView;
     private ImageView mapIv;
     private Bundle savedInstanceState;
 
@@ -100,6 +103,19 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
 
     public String getmCurrentAdress() {
         return mCurrentAdress;
+    }
+
+
+    public void setmCurrentLat(double mCurrentLat) {
+        this.mCurrentLat = mCurrentLat;
+    }
+
+    public void setmCurrentLon(double mCurrentLon) {
+        this.mCurrentLon = mCurrentLon;
+    }
+
+    public void setmCurrentAdress(String mCurrentAdress) {
+        this.mCurrentAdress = mCurrentAdress;
     }
 
     public SignageOrderInfoAdapter(Context context, List<SignageManagementBean.SignBoardBean.TemplateValuesBean> list, ImageAdapter imageAdapter, Bundle savedInstanceState) {
@@ -116,9 +132,9 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     }
 
     private void initMap() {
-        if (aMap == null) {
-            aMap = mapView.getMap();
-        }
+//        if (aMap == null) {
+//            aMap = mapView.getMap();
+//        }
         //初始化定位
         mLocationClient = new AMapLocationClient(context);
         //设置定位回调监听
@@ -319,8 +335,14 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
         }else if (holder instanceof GridViewHolder){
             ((GridViewHolder) holder).gridview.setAdapter(imageAdapter);
         }else if (holder instanceof LocationHolder){
-            mapView = ((LocationHolder) holder).locationMv;
+//            mapView = ((LocationHolder) holder).locationMv;
             mapIv = ((LocationHolder) holder).mapIv;
+            mapIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((Activity)context).startActivityForResult(new Intent(context, EditLocActivity.class), 1);
+                }
+            });
             initMap();
         }
     }
@@ -357,22 +379,23 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
                 //可在其中解析amapLocation获取相应内容。
-                 mCurrentLat = aMapLocation.getLatitude();
-                 mCurrentLon = aMapLocation.getLongitude();
-                 mCurrentAdress = aMapLocation.getAddress();
-
                 latLng = new LatLng(mCurrentLat, mCurrentLon);//构造一个位置
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
-                    //设置缩放级别
-                    aMap.moveCamera(CameraUpdateFactory.zoomTo(14));
-                    //将地图移动到定位点
-                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(mCurrentLat, mCurrentLon)));
+                    isFirstLoc = false;
+                    mCurrentLat = aMapLocation.getLatitude();
+                    mCurrentLon = aMapLocation.getLongitude();
+                    mCurrentAdress = aMapLocation.getAddress();
+                    downLoadMapPic(mCurrentLon+"", mCurrentLat+"");
+//                    //设置缩放级别
+//                    aMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+//                    //将地图移动到定位点
+//                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(mCurrentLat, mCurrentLon)));
                     //点击定位按钮 能够将地图的中心移动到定位点
                     mListener.onLocationChanged(aMapLocation);
 
-                    isFirstLoc = false;
-                    downLoadMapPic(mCurrentLon+"", mCurrentLat+"");
+
+
                 }
 
             } else {
@@ -451,15 +474,15 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
     }
 
     class LocationHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.location_mv)
-        MapView locationMv;
+//        @BindView(R.id.location_mv)
+//        MapView locationMv;
         @BindView(R.id.map_iv)
         ImageView mapIv;
 
         LocationHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            locationMv.onCreate(savedInstanceState);
+//            locationMv.onCreate(savedInstanceState);
         }
     }
 
@@ -471,11 +494,12 @@ public class SignageOrderInfoAdapter extends RecyclerView.Adapter implements Loc
                 .execute(new FileCallback() {
                     @Override
                     public void onSuccess(Response<File> response) {
-                        File file = response.body();
-                        try {
 
-                        }catch (Exception e){
+                        try {
+                            File file = response.body();
                             Glide.with(context).load(file).into(mapIv);
+                        }catch (Exception e){
+                           e.printStackTrace();
                         }
                     }
 
